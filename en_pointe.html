@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="En Pointe — Free RAD ballet learning resource. Every step from Primary to Advanced 2, searchable dictionary, how-to guides and repertoire variations.">
+<title>En Pointe — Free RAD Ballet Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--blush:#f9ede8;--bm:#f0d4cc;--bd:#c9897a;--cream:#fdf8f4;--warm:#fffcf9;--rose:#b5645a;--rd:#8a3f35;--muted:#9e8882;--text:#3a2825;--tl:#6b514c;--gold:#c9a87c;--gf:#f0e6d4;--bdr:rgba(180,120,100,0.18);--sh:0 2px 24px rgba(150,80,60,0.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);font-size:14px;min-height:100vh}
+.hero{background:linear-gradient(135deg,#fdf0ea 0%,#f7ddd5 60%,#eedbd7 100%);padding:2.4rem 2rem 2rem;text-align:center;border-bottom:1px solid var(--bdr);position:relative;overflow:hidden}
+.hero::before,.hero::after{content:'❀';position:absolute;font-size:36px;opacity:.1;color:var(--rose)}
+.hero::before{top:.9rem;left:1.5rem}.hero::after{bottom:.5rem;right:1.5rem}
+.htag{font-size:9.5px;letter-spacing:3.5px;text-transform:uppercase;color:var(--rose);margin-bottom:.5rem;font-weight:500}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2rem,5.5vw,3.2rem);color:var(--text);line-height:1.1;margin-bottom:.35rem}
+.hero h1 em{font-style:italic;color:var(--rose)}
+.hsub{font-size:12.5px;color:var(--tl);font-weight:300;margin-bottom:1.3rem}
+.hbgs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.badge{background:white;border:1px solid var(--bdr);border-radius:20px;padding:3px 11px;font-size:10.5px;color:var(--rd)}
+.topnav{display:flex;background:white;border-bottom:1px solid var(--bdr);padding:0 1rem;overflow-x:auto;position:sticky;top:0;z-index:100}
+.tnb{padding:.8rem .95rem;font-size:12.5px;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;font-family:'Jost',sans-serif;transition:all .2s}
+.tnb:hover{color:var(--rose)}.tnb.act{color:var(--rd);border-bottom-color:var(--rose);font-weight:500}
+.app{display:flex;min-height:calc(100vh - 152px)}
+.tab-panel{display:none}.tab-panel.act{display:flex}
+.sidebar{width:210px;min-width:210px;background:white;border-right:1px solid var(--bdr);padding:.9rem 0;overflow-y:auto;flex-shrink:0}
+.slbl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);padding:0 1rem;margin:.55rem 0 .22rem;font-weight:500}
+.swrap{position:relative;padding:0 1rem .65rem}
+.sin{width:100%;padding:6px 8px 6px 26px;border:1px solid var(--bdr);border-radius:7px;font-size:11.5px;font-family:'Jost',sans-serif;background:var(--blush);color:var(--text);outline:none}
+.sin:focus{border-color:var(--bd);background:white}
+.sico{position:absolute;left:19px;top:50%;transform:translateY(-50%);width:11px;height:11px;opacity:.4}
+.li{display:flex;align-items:center;gap:8px;padding:.43rem 1rem;cursor:pointer;font-size:12px;color:var(--tl);transition:all .15s;border-left:2px solid transparent}
+.li:hover{background:var(--blush)}.li.act{background:var(--blush);color:var(--rd);border-left-color:var(--rose);font-weight:500}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dp{background:#e8b4b8}.dr{background:var(--rose)}.dg{background:var(--gold)}.dd{background:var(--rd)}
+.main{flex:1;padding:1.5rem 1.8rem;overflow-x:hidden}
+.lvl-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;margin-bottom:.2rem}
+.lvl-sub{font-size:12px;color:var(--muted);font-weight:300;margin-bottom:1.3rem}
+.sgrp{margin-bottom:1.4rem}
+.glbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--bd);margin-bottom:.4rem;font-weight:500;padding-bottom:.22rem;border-bottom:1px solid var(--bdr)}
+.sgrid{display:flex;flex-direction:column;gap:.75rem}
+.sc{background:white;border:1px solid var(--bdr);border-radius:12px;overflow:hidden;transition:box-shadow .2s}
+.sc:hover{box-shadow:var(--sh)}
+.sch{display:flex;align-items:center;gap:.65rem;padding:.85rem 1.05rem;cursor:pointer}
+.smeta{flex:1}
+.sfr{font-family:'Cormorant Garamond',serif;font-size:1.08rem;color:var(--text);margin-bottom:1px;line-height:1.25}
+.sen{font-size:11px;color:var(--muted);font-style:italic}
+.stags{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.tag{font-size:9px;padding:2px 6px;border-radius:20px;background:var(--gf);color:var(--rd)}
+.tnew{background:#fce8e8;color:#a33}
+.tbar{background:#e8f0f8;color:#3a5a8a}
+.tcen{background:#e8f5ee;color:#2a6644}
+.tall{background:#fdf0e0;color:#8a5a1a}
+.ttur{background:#f0e8f5;color:#6a3a8a}
+.tpte{background:#e8f5f0;color:#1a6a55}
+.tcha{background:#fce8f4;color:#8a1a6a}
+.cact{display:flex;gap:5px;align-items:center}
+.lb{background:white;border:1px solid var(--bdr);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:12px;flex-shrink:0;transition:all .15s;font-family:'Jost',sans-serif}
+.lb.ok{background:var(--rose);border-color:var(--rose);color:white}
+.xb{width:23px;height:23px;border:1px solid var(--bdr);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;color:var(--muted);background:var(--blush);transition:all .2s;cursor:pointer;border:none}
+.sc.open .xb{background:var(--rose);color:white;transform:rotate(45deg)}
+.scb{display:none;border-top:1px solid var(--bdr);padding:1.05rem;background:var(--warm)}
+.sc.open .scb{display:block}
+.mts{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+.mt{padding:3px 10px;border-radius:20px;font-size:10.5px;cursor:pointer;border:1px solid var(--bdr);background:white;color:var(--muted);font-family:'Jost',sans-serif;transition:all .15s}
+.mt.act{background:var(--rose);color:white;border-color:var(--rose)}
+.varea{background:linear-gradient(135deg,var(--blush) 0%,var(--bm) 100%);border-radius:10px;padding:1.4rem;margin-bottom:.85rem;border:1px solid var(--bd);display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.vico{width:44px;height:44px;background:var(--rose);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vico::after{content:'';border-left:14px solid white;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:3px}
+.vtitle{font-size:12.5px;color:var(--tl);font-weight:400}
+.vsub{font-size:11px;color:var(--muted)}
+.vlinks{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:2px}
+.vl{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;font-size:11.5px;font-family:'Jost',sans-serif;cursor:pointer;text-decoration:none;transition:all .15s;border:1px solid}
+.vl-yt{background:white;color:#c00;border-color:rgba(200,0,0,.25)}.vl-yt:hover{background:#fff0f0}
+.vl-gl{background:white;color:var(--rd);border-color:var(--bdr)}.vl-gl:hover{background:var(--blush)}
+.clbl{font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-weight:500}
+.ctxt{font-size:12.5px;color:var(--tl);line-height:1.75;font-weight:300}
+.sl{list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:5px}
+.sl li{counter-increment:s;display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--tl);line-height:1.65}
+.sl li::before{content:counter(s);min-width:19px;height:19px;border-radius:50%;background:var(--bm);color:var(--rd);font-size:9.5px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.vc{background:var(--gf);border-radius:8px;padding:9px 12px;margin-bottom:7px;border-left:3px solid var(--gold)}
+.vn{font-family:'Cormorant Garamond',serif;font-size:13.5px;color:var(--text)}
+.vx{font-size:11px;color:var(--tl);margin-top:2px;font-weight:300}
+.dg2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.65rem}
+.dc{background:white;border:1px solid var(--bdr);border-radius:10px;padding:.8rem 1rem;cursor:pointer;transition:all .15s}
+.dc:hover{border-color:var(--bd);background:var(--blush)}
+.dltr{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--bd);opacity:.4;line-height:1;margin-bottom:.18rem}
+.dterm{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--text)}
+.deng{font-size:10.5px;color:var(--muted);font-style:italic;margin-top:2px}
+.dlvl{font-size:9px;padding:2px 6px;border-radius:20px;background:var(--bm);color:var(--rd);display:inline-block;margin-top:4px}
+.dsw{position:relative;margin-bottom:1.1rem}
+.ds{width:100%;padding:10px 14px 10px 40px;border:1.5px solid var(--bdr);border-radius:10px;font-size:13px;font-family:'Jost',sans-serif;background:white;color:var(--text);outline:none;transition:border-color .2s}
+.ds:focus{border-color:var(--rose)}
+.anav{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:1.1rem}
+.ab{width:25px;height:25px;border:1px solid var(--bdr);border-radius:5px;font-size:11px;cursor:pointer;background:white;color:var(--tl);transition:all .15s;display:flex;align-items:center;justify-content:center;font-family:'Jost',sans-serif}
+.ab:hover,.ab.act{background:var(--rose);color:white;border-color:var(--rose)}
+.psec{background:white;border:1px solid var(--bdr);border-radius:12px;padding:1.2rem;margin-bottom:1.2rem}
+.pt{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:.85rem}
+.lp{margin-bottom:.8rem}
+.lph{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.lpn{font-size:12px;color:var(--tl)}.lpc{font-size:11px;color:var(--muted)}
+.pbg{height:4px;background:var(--bm);border-radius:10px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--bd),var(--rose));border-radius:10px;transition:width .5s ease}
+footer{text-align:center;padding:1.5rem 1rem;font-size:11px;color:var(--muted);border-top:1px solid var(--bdr);background:white;margin-top:2rem}
+footer a{color:var(--rose);text-decoration:none}
+footer a:hover{text-decoration:underline}
+@media(max-width:600px){.app{flex-direction:column}.sidebar{width:100%;min-width:unset;border-right:none;border-bottom:1px solid var(--bdr)}.main{padding:1rem}.dg2{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="htag">Royal Academy of Dance · Official Specifications 2025</p>
+  <h1>En <em>Pointe</em></h1>
+  <p class="hsub">Every RAD step, grade by grade — free forever. No login, no ads, no cost.</p>
+  <div class="hbgs">
+    <span class="badge">Primary → Advanced 2</span>
+    <span class="badge">Official RAD 2025 Syllabus</span>
+    <span class="badge">Cumulative vocabulary</span>
+    <span class="badge">Searchable dictionary</span>
+    <span class="badge">Repertoire variations</span>
+  </div>
+</div>
+
+<nav class="topnav">
+  <button class="tnb act" onclick="showV('levels',this)">Syllabus by Level</button>
+  <button class="tnb" onclick="showV('dictionary',this)">Dictionary</button>
+  <button class="tnb" onclick="showV('progress',this)">My Progress</button>
+</nav>
+
+<div id="view-levels" class="app tab-panel act">
+  <aside class="sidebar">
+    <div class="slbl" style="margin-top:.3rem">Search steps</div>
+    <div class="swrap">
+      <svg class="sico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+      <input class="sin" type="text" placeholder="e.g. plié, assemblé…" oninput="filtS(this.value)">
+    </div>
+    <div class="slbl">Graded Syllabus</div>
+    <div class="li act" onclick="selLvl('primary',this)"><span class="dot dp"></span>Primary</div>
+    <div class="li" onclick="selLvl('g1',this)"><span class="dot dr"></span>Grade 1</div>
+    <div class="li" onclick="selLvl('g2',this)"><span class="dot dr"></span>Grade 2</div>
+    <div class="li" onclick="selLvl('g3',this)"><span class="dot dr"></span>Grade 3</div>
+    <div class="li" onclick="selLvl('g4',this)"><span class="dot dg"></span>Grade 4</div>
+    <div class="li" onclick="selLvl('g5',this)"><span class="dot dg"></span>Grade 5</div>
+    <div class="li" onclick="selLvl('g6',this)"><span class="dot dg"></span>Grade 6</div>
+    <div class="li" onclick="selLvl('g7',this)"><span class="dot dg"></span>Grade 7</div>
+    <div class="li" onclick="selLvl('g8',this)"><span class="dot dg"></span>Grade 8</div>
+    <div class="slbl" style="margin-top:.6rem">Vocational</div>
+    <div class="li" onclick="selLvl('if',this)"><span class="dot dd"></span>Intermediate Foundation</div>
+    <div class="li" onclick="selLvl('int',this)"><span class="dot dd"></span>Intermediate</div>
+    <div class="li" onclick="selLvl('af',this)"><span class="dot dd"></span>Advanced Foundation</div>
+    <div class="li" onclick="selLvl('a1',this)"><span class="dot dd"></span>Advanced 1</div>
+    <div class="li" onclick="selLvl('a2',this)"><span class="dot dd"></span>Advanced 2</div>
+  </aside>
+  <main class="main" id="sm"></main>
+</div>
+
+<div id="view-dictionary" class="app tab-panel">
+  <main class="main" style="max-width:100%;width:100%;padding:1.5rem 1.8rem">
+    <h2 class="lvl-title">Ballet Dictionary</h2>
+    <p class="lvl-sub">All official RAD vocabulary — search by French term, English meaning, or level</p>
+    <div class="dsw">
+      <svg style="position:absolute;left:13px;top:50%;transform:translateY(-50%);width:15px;height:15px;opacity:.4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+      <input class="ds" id="dsrch" type="text" placeholder="Search…" oninput="filtD(this.value)">
+    </div>
+    <div class="anav" id="anav"></div>
+    <div class="dg2" id="dgr"></div>
+  </main>
+</div>
+
+<div id="view-progress" class="app tab-panel">
+  <main class="main" style="max-width:660px;padding:1.5rem 1.8rem">
+    <h2 class="lvl-title">My Progress</h2>
+    <p class="lvl-sub">Mark each step as learned — your progress is tracked here</p>
+    <div class="psec" id="pbars"></div>
+    <p style="font-size:11px;color:var(--muted);font-style:italic;margin-top:.5rem">Tap ✓ on any step card to mark it as learned. Progress is saved while the page is open.</p>
+  </main>
+</div>
+
+<footer>
+  Based on the <a href="https://www.royalacademyofdance.org/exams/specifications-and-syllabus-updates/" target="_blank">RAD Specifications 2025</a> ·
+  Free to use for students and teachers ·
+  <a href="https://www.royalacademyofdance.org" target="_blank">royalacademyofdance.org</a>
+</footer>
+
+<script>
+const D={
+primary:{label:'Primary in Dance',age:'Min. age 6',desc:'Posture, positions, expressive movement and the joy of dance',groups:[
+{g:'Exercises',steps:[
+{id:'p1',fr:'Plié',en:'To bend the knees',tags:['Foundation'],desc:'The fundamental knee bend. Demi-plié: heels stay on the floor. Grand plié: heels lift. Every step in ballet begins and ends in plié.',how:['Stand in 1st position, weight even, toes turned out from the hip.','Demi-plié: bend knees over toes — heels remain on the floor.','Grand plié: continue until heels must rise.','Straighten smoothly, pressing the floor away.'],vs:[{n:'Swan Lake Act II — White Swan Adagio',x:'Every arabesque and développé begins and ends with plié — it is the breath of every phrase.'}]},
+{id:'p2',fr:'Relevé',en:'To rise onto demi-pointe',tags:['Foundation'],desc:'Rising from flat foot to the balls of the feet. Builds ankle strength for all future pointe work.',how:['Stand in 1st, core lifted.','Push evenly through both feet, rising to demi-pointe.','Hold the top — pull up through the whole body.','Lower with control; never drop the heels.'],vs:[{n:'Giselle Act I — Peasant Pas de Deux',x:'Sustained relevés on one leg give this folk-dance variation its poised, joyful quality.'}]},
+{id:'p3',fr:'Port de bras',en:'Carriage of the arms',tags:['Arms','Foundation'],desc:'Coordinated movement of the arms through bras bas, 1st, and 2nd position. The basis of all expressive arm work.',how:['Begin in bras bas — arms softly rounded at hip height.','Open through 1st — wrists soft, fingers gently together.','Extend to 2nd — arms slightly below shoulder height.','Return smoothly through 1st to bras bas.'],vs:[{n:"Sleeping Beauty Act I — Rose Adagio",x:"Aurora's arms sweep through every port de bras position between each suitor's rose."}]},
+{id:'p4',fr:'Positions of the feet',en:'1st, 2nd and 3rd position',tags:['Foundation'],desc:'The five classical foot positions. Primary introduces 1st, 2nd and 3rd with natural, not forced, turnout.',how:['1st: heels together, feet forming a V from the hip.','2nd: feet apart (shoulder width), both turned out.','3rd: one foot in front, heel to arch of back foot.','Work turnout from the hip — never force the feet outward.'],vs:[{n:'All classical ballet',x:'Every step begins and ends in one of the five positions — they are the grammar of ballet.'}]},
+]},
+{g:'Allegro & Travelling',steps:[
+{id:'p5',fr:'Sautés in 1st position',en:'Small jumps from two feet',tags:['Allegro'],desc:'Both feet spring off the floor together and land in demi-plié. The first jump — teaches foot articulation and soft landings.',how:['Begin in 1st, demi-plié.','Spring upward — both feet leave the floor together.','Point both feet fully at the highest point.','Land toe–ball–heel, softening into demi-plié.'],vs:[{n:"Coppélia Act I — Swanilda's Waltz",x:'Simple sautés in 1st open this sunny folk ballet.'}]},
+{id:'p6',fr:'Gallops',en:'Sliding galloping step',tags:['Travelling'],desc:'A lively chasing step in parallel. Introduces rhythm, spatial awareness and the joy of movement.',how:['Step to the side on one foot.','Chase the other foot to meet it before stepping again.','Performed with a light spring and rhythmic bounce.','Travel across the room with energy and joy.'],vs:[{n:"The Nutcracker — Children's Party",x:"Galloping enters the vocabulary of theatrical children's dance from the very beginning."}]},
+]}
+]},
+g1:{label:'Grade 1',age:'Min. age 7',desc:'Battement tendu, glissade, petit sauté and first character dance',groups:[
+{g:'Barre',steps:[
+{id:'g1a',fr:'Battement tendu',en:'Stretched beat',tags:['Barre','New ★'],desc:'The working foot slides along the floor to full point, then returns. The cornerstone foot exercise — practised in every grade for life.',how:['Begin in 1st at the barre.','Slide the working foot through demi-pointe to a full point.','Heel leads going devant; little toe leads going derrière.','Return in reverse — brush back, heel arrives last.'],vs:[{n:"Coppélia — Swanilda's Waltz",x:'Fast tendu sequences in 3/4 time give this folk ballet its warm, rhythmic energy.'}]},
+{id:'g1b',fr:'Demi-plié at barre',en:'Half bend — barre exercise',tags:['Barre','New ★'],desc:'The half-plié introduced formally at the barre in 1st and 2nd. Trains the mechanics that underpin every jump and turn.',how:['Stand in 1st, one hand on the barre.','Bend both knees equally over toes — heels stay on the floor.','Go only as far as heels allow without lifting.','Straighten with equal pressure through both legs.'],vs:[{n:'All classical ballet',x:'Every jump and turn preparation passes through demi-plié — it is never not relevant.'}]},
+]},
+{g:'Centre',steps:[
+{id:'g1e',fr:'Transfer of weight',en:'Shifting weight from one leg to another',tags:['Centre','New ★'],desc:'Simple transfers preparing the mechanics needed for all allegro and travelling steps.',how:['Begin in 2nd position.','Shift weight over one leg — knee bends gently.','Both feet remain on the floor throughout.','Return to centre, then transfer to the other side.'],vs:[{n:'Giselle Act I — Giselle and Albrecht',x:'Slow transfers of weight become the ethereal floating quality of Act II.'}]},
+{id:'g1f',fr:'Chassé',en:'To chase — sliding step',tags:['Centre','Travelling','New ★'],desc:"A sliding step where one foot chases the other. The most important linking step in the entire ballet vocabulary.",how:['Begin in 1st. Step to the side on the right foot.','Slide left foot to meet right; right is displaced as weight transfers.','Can travel en avant, en arrière, or de côté.','Keep the body upright and movement smooth.'],vs:[{n:'Les Sylphides — Mazurka',x:'Chassés en avant build the dreamy, travelling quality throughout this Romantic work.'}]},
+{id:'g1g',fr:'Glissade',en:'To glide',tags:['Centre','Travelling','Allegro','New ★'],desc:'A gliding step connecting jumps. Both feet momentarily brush the floor. The essential linking step of all allegro.',how:['Begin in 1st (or 5th), demi-plié.','Slide the working foot to the side — both toes remain on the floor.','Transfer weight fully; draw other foot to close in 1st demi-plié.','Quality: smooth, gliding — not a jump.'],vs:[{n:'Swan Lake Act II — Corps enchainement',x:'Glissades are the connective tissue making corps enchainements flow seamlessly.'}]},
+]},
+{g:'Allegro',steps:[
+{id:'g1h',fr:'Petit sauté',en:'Small jump — two feet to two feet',tags:['Allegro','New ★'],desc:'A jump from two feet to two feet in 1st. Develops foot articulation and the mechanics of landing softly.',how:['Demi-plié in 1st.','Spring upward — both feet leave the floor.','Fully point both feet at the top.','Land through demi-pointe into demi-plié — never flat.'],vs:[{n:'Sleeping Beauty Act III — Fairies Variations',x:'Rows of petit sautés create the sparkling, light quality of the fairy variations.'}]},
+{id:'g1i',fr:'Petit jeté',en:'Small throw — one foot to the other',tags:['Allegro','New ★'],desc:'A small jump from one foot to the other. The working leg brushes to the side and the dancer springs across.',how:['Stand on one foot. Brush the working leg to the side.','Spring off the supporting leg.','Transfer weight in the air — land on working leg in demi-plié.','The leaving leg draws to cou-de-pied on landing.'],vs:[{n:'Coppélia Act I — Mazurka',x:'Petits jetés give the Mazurka its bright, bounding folk character.'}]},
+{id:'g1j',fr:'Spring points',en:'Hop with pointed foot',tags:['Allegro','New ★'],desc:'A hop on one foot while the other extends to a pointed tendu. Teaches the one-footed spring used in temps levé.',how:['Stand on one leg, other in cou-de-pied.','Spring off the standing foot.','Extend the free foot to a pointed tendu position.','Back heel remains down in the back spring point.'],vs:[{n:"Sleeping Beauty — Bluebird Variation",x:"Spring-point hops are the foundation of the Bluebird's light, fluttering allegro."}]},
+]}
+]},
+g2:{label:'Grade 2',age:'Min. age 7',desc:'Assemblé, soubresaut, échappé sauté, battement fondu and character dance in heeled shoes',groups:[
+{g:'Barre (Grade 2 additions)',steps:[
+{id:'g2a',fr:'Battement fondu',en:'Melting beat',tags:['Barre','New ★'],desc:'A slow melting bend of the supporting leg as the working leg extends to tendu. Trains the "fondu" quality essential to all adage.',how:['Working foot starts sur le cou-de-pied.','Supporting leg bends as working leg extends to tendu — simultaneously.','Straighten both legs together — arrive at tendu.','Return working foot to cou-de-pied as you demi-plié again.'],vs:[{n:'Swan Lake Act II — White Swan Adagio',x:"Every slow extension in the White Swan Adagio uses fondu — the melting quality is Odette."}]},
+{id:'g2b',fr:'Preparation for grands battements',en:'Preparation for large kicks',tags:['Barre','New ★'],desc:'The exercise that builds toward grand battement — brushing through tendu at a controlled height of around 45°.',how:['Begin in 5th at the barre.','Brush through tendu, continuing the leg upward to a comfortable height.','Keep supporting leg, hip, and pelvis square and still.','Return by reversing the brush — through tendu, close to 5th.'],vs:[{n:"Don Quixote — Kitri's Variation",x:"Grand battements define Kitri's fiery, open diagonal phrases."}]},
+]},
+{g:'Centre (Grade 2 additions)',steps:[
+{id:'g2c',fr:'Adage',en:'Slow, sustained centre work',tags:['Centre','New ★'],desc:'Grade 2 introduces adage — slow, controlled centre work linking transfers of weight, arabesques and simple extensions.',how:['Adage is performed slowly, with control and musicality.','Each movement connects to the next without a pause.','The quality is liquid and sustained — never mechanical.','Eyes and head lead each phrase with épaulement.'],vs:[{n:"Sleeping Beauty Act I — Rose Adagio",x:"Aurora's Rose Adagio is the supreme example of adage — balance, grace and total control."}]},
+{id:'g2e',fr:'Soubresaut',en:'Sudden spring — jump in 5th',tags:['Allegro','New ★'],desc:'A jump from two feet in 5th, landing in 5th. Both legs squeeze tightly together in the air.',how:['Begin in 5th, demi-plié.','Spring upward — legs close tightly together in the air.','Fully point both feet at the peak.','Land softly in 5th demi-plié, maintaining the crossing.'],vs:[{n:'Sleeping Beauty — Bluebird Variation',x:'Soubresauts with directional changes create the fluttering, birdlike effect.'}]},
+{id:'g2f',fr:'Échappé sauté',en:'Escaped jump to 2nd position',tags:['Allegro','New ★'],desc:"A jump from 5th position opening to 2nd in the air, then closing back. The feet escape outward.",how:['Begin in 5th, demi-plié.','Jump and open both feet to 2nd in the air.','Land simultaneously in 2nd demi-plié.','Spring again — close feet to 5th on landing.'],vs:[{n:'Coppélia Act I — Mazurka',x:"Échappés sautés en croix give the Mazurka its bright, bouncing folk energy."}]},
+{id:'g2g',fr:'Assemblé',en:'To assemble — jump joining both feet',tags:['Allegro','New ★'],desc:'Jump from one foot — working leg brushes through dégagé, joins the supporting leg in the air, both land together in 5th.',how:['Begin in 5th, demi-plié.','Brush the working foot along the floor to dégagé.','Spring off the supporting leg simultaneously.','Both feet join in the air; land in 5th demi-plié.'],vs:[{n:'La Bayadère — Kingdom of the Shades',x:'Perfectly synchronised assemblés give the corps their precise, unified silhouette.'}]},
+{id:'g2h',fr:'Pas de chat',en:'Step of the cat',tags:['Allegro','New ★'],desc:"A light, cat-like jump where each leg is drawn up successively to retiré.",how:['Begin in 5th, demi-plié. Spring sideways off the back foot.','Draw the back foot up to retiré as you jump.','The front foot immediately follows to retiré.','Land on the first foot, then close to 5th demi-plié.'],vs:[{n:'Sleeping Beauty Act III — Garland Dance',x:'Rows of pas de chat create the joyful, playful entrance of the garland bearers.'}]},
+]}
+]},
+g3:{label:'Grade 3',age:'Min. age 7',desc:'Ronds de jambe à terre, arabesque, sissonne, changements and pirouette preparation',groups:[
+{g:'Barre (Grade 3 additions)',steps:[
+{id:'g3a',fr:'Battement glissé',en:'Gliding beat — foot lifts slightly off floor',tags:['Barre','New ★'],desc:'Like battement tendu but faster — the foot lifts 2–5° off the floor. Builds speed and precision for allegro.',how:['Begin in 5th. Brush through tendu quality at speed.','Allow the foot to lift just slightly at its fullest extension.','The action is sharper and quicker than tendu.','Close precisely into 5th each time.'],vs:[{n:'La Bayadère — Kingdom of the Shades',x:'Shimmering battements glissés give the corps their uniform, weightless quality.'}]},
+{id:'g3b',fr:'Battements fondus & développés devant',en:'Fondu and unfolding leg — front',tags:['Barre','New ★'],desc:'Développé (unfolding the leg to 90°) introduced devant. Working leg rises through cou-de-pied and retiré to full extension.',how:['Draw working foot to cou-de-pied, then to retiré (toes at knee).','Continue extending the leg forward to full height at 90°.','Fondu and développé are co-ordinated — one unified action.','Reach full extension before closing.'],vs:[{n:'Swan Lake Act II — White Swan Adagio',x:'The slow développé is one of the most expressive images in all ballet.'}]},
+{id:'g3c',fr:'Ronds de jambe à terre',en:'Circle of the leg along the floor',tags:['Barre','New ★'],desc:'The working leg traces a semicircle along the floor. En dehors (forward to back) or en dedans (back to forward).',how:['Begin in tendu devant from 1st.','En dehors: arc from devant through à la seconde to derrière.','Keep hips square — the leg moves, not the hip.','Return through derrière to begin the next circle.'],vs:[{n:'Giselle Act II — Grand Pas de Deux',x:'Slow ronds de jambe at 90° are the heart of the adage between Giselle and Albrecht.'}]},
+{id:'g3d',fr:'Grands battements A & B',en:'Large battements — devant; 2nd and derrière',tags:['Barre','New ★'],desc:'The full grand battement — a swing of the working leg to 90°+. Grade 3 introduces devant (A) and 2nd/derrière (B).',how:['Brush through tendu and glissé with controlled power.','Swing the leg to at least 90° — do not hike the hip.','The return is a controlled reversal — close through demi-pointe.','Height builds over time; control always comes first.'],vs:[{n:"Corsaire — Médora's Variation",x:'Grands battements en avant show the dramatic arc of this spirited solo.'}]},
+]},
+{g:'Centre (Grade 3 additions)',steps:[
+{id:'g3e',fr:'1st arabesque',en:'First arabesque',tags:['Centre','New ★'],desc:'Stand on one leg, working leg extended behind. Front arm forward, side arm to 2nd. The signature pose of classical ballet.',how:['Stand on the supporting leg.','Extend working leg behind — foot fully pointed, leg turned out.','Front arm forward at shoulder height; other arm to 2nd.','Body tilts slightly forward to lengthen the back line.'],vs:[{n:"Sleeping Beauty Act I — Aurora's Variation",x:"Aurora balances in arabesque holding a rose — one of ballet's defining images."}]},
+{id:'g3f',fr:'Sissonne simple',en:'Simple sissonne — jump to one foot',tags:['Allegro','New ★'],desc:'A jump from two feet, landing on one. Working leg closes to cou-de-pied on landing.',how:['Begin in 5th, demi-plié.','Spring from two feet, traveling slightly.','Land on one foot in demi-plié — working foot to cou-de-pied.','Immediately close to 5th or continue into the next step.'],vs:[{n:"Don Quixote Act III — Kitri",x:"Sissonnes drive the energy of Kitri's bravura allegro diagonal."}]},
+{id:'g3g',fr:'Changement de pieds',en:'Change of feet — jump from 5th to 5th',tags:['Allegro','New ★'],desc:'Jump in 5th where the feet change on each landing. One of the most frequently used small jumps.',how:['Begin in 5th, demi-plié.','Spring upward — both feet pointed in the air.','Change which foot is in front while airborne.','Land in 5th demi-plié, other foot now in front.'],vs:[{n:'Any classical petit allegro',x:'Changements are the "walking bass" of every petit allegro combination.'}]},
+{id:'g3h',fr:'Posé',en:'To place — step onto demi-pointe',tags:['Centre','Travelling','New ★'],desc:'A direct step onto demi-pointe. Used as a linking step and pirouette preparation.',how:['Step directly onto the ball of one foot.','The leg straightens as weight is fully transferred.','Posé en avant: step forward; de côté: step to the side.','Used to build momentum for turns.'],vs:[{n:"Sleeping Beauty Act I — Lilac Fairy",x:"A series of posé turns marks the Lilac Fairy's dignified entrance."}]},
+{id:'g3i',fr:'Temps levé',en:'Raised time — hop on one foot',tags:['Allegro','New ★'],desc:'A hop on one foot with the other held in a fixed position — cou-de-pied, retiré, or arabesque.',how:['Stand on one leg, other in cou-de-pied or retiré.','Spring upward off the supporting leg.','Maintain the working leg position exactly throughout.','Land softly in demi-plié on the same supporting leg.'],vs:[{n:'Giselle Act II — Wilis Grand Allegro',x:'Temps levés en arabesque give the Wilis their supernatural, weightless quality.'}]},
+{id:'g3j',fr:'Pirouette preparation — half turn en dehors',en:'Half turn en dehors',tags:['Turns','New ★'],desc:'Half turns en dehors from 4th and 5th — introducing balance in retiré, spotting, and the push-off mechanics.',how:['Prepare in 4th — front leg in demi-plié, back leg long.','Relevé on supporting leg; back foot sharply to retiré.','Turn en dehors — spot one point.','Finish in 5th demi-plié after the half turn.'],vs:[{n:'All classical variations',x:'Every pirouette in the repertoire uses this same preparation.'}]},
+]}
+]},
+g4:{label:'Grade 4',age:'Min. age 7',desc:'Grand plié in 5th, battement frappé, développé en croix, pirouettes, pas de basque',groups:[
+{g:'Barre (Grade 4 additions)',steps:[
+{id:'g4a',fr:'Grand plié in 5th position',en:'Full bend in 5th position',tags:['Barre','New ★'],desc:'Grand plié in 5th — the deepest plié position, requiring open hips, strong Achilles tendons, and full turnout.',how:['Stand in 5th, one hand on barre.','Begin demi-plié; continue downward allowing heels to rise.','Lower toward sitting position, knees tracking over toes.','Rise through demi-pointe, heels returning last.'],vs:[{n:"Don Quixote Act III — Kitri",x:"Grand pliés in 5th begin Kitri's famous diagonal, gathering power for the allegro."}]},
+{id:'g4b',fr:'Battement frappé',en:'Struck beat',tags:['Barre','New ★'],desc:'The working foot strikes sharply to 2nd from cou-de-pied. Develops speed and precision of foot articulation.',how:['Working foot begins sur le cou-de-pied.','Strike the working foot sharply to 2nd — fully extended, just off the floor.','The action is crisp and percussive — like a snap.','Return quickly to cou-de-pied; supporting knee stays straight.'],vs:[{n:"La Bayadère — Nikiya's Variation",x:"Quick, jewel-like footwork gives Nikiya's solo its precise, ornamental quality."}]},
+{id:'g4c',fr:'Développés devant & à la seconde',en:'Développé — front and to 2nd',tags:['Barre','New ★'],desc:'The working leg unfolds from retiré to full 90° extension devant and à la seconde.',how:['Draw working foot through cou-de-pied to retiré.','Continue extending to the desired direction at 90°.','The thigh reaches its height before the lower leg extends.','Close smoothly — reverse the unfolding to 5th.'],vs:[{n:'Swan Lake Act II — White Swan Adagio',x:'The slow développé à la seconde is the most iconic image of the White Swan adage.'}]},
+{id:'g4d',fr:'Grands battements — all directions',en:'Large battements en croix',tags:['Barre','New ★'],desc:'Grade 4 grands battements performed in all directions — devant, à la seconde, and derrière.',how:['Brush through tendu and glissé with controlled power.','Swing the leg to at least 90° — pelvis level throughout.','The speed of the brush determines the height.','Close with equal control; never drop the leg.'],vs:[{n:'Corsaire — Slave Variation',x:'A diagonal of grands battements defines this spectacular male variation.'}]},
+]},
+{g:'Centre (Grade 4 additions)',steps:[
+{id:'g4f',fr:'Pas de basque glissé & sauté en avant',en:'Basque step — forward',tags:['Centre','Allegro','New ★'],desc:"A three-part step travelling forward: sweep the leg in a semicircle, step onto it, close. Glissé slides; sauté springs.",how:['Begin in 5th, demi-plié. Dégagé the front foot devant.','Swing the working leg in a semicircle through à la seconde.','Transfer weight forward onto the working leg.','Close the other foot to 5th through demi-pointe.'],vs:[{n:'Les Sylphides — Waltz',x:"The pas de basque's sweeping arc embodies the Romantic quality of this ballet blanc."}]},
+{id:'g4g',fr:'Assemblés dessus & dessous',en:'Assemblé over and under',tags:['Allegro','New ★'],desc:'Assemblé now travels. Dessus: working foot ends in front. Dessous: working foot ends behind.',how:['Assemblé dessus: brush back foot to 2nd; land it in front in 5th.','Assemblé dessous: brush front foot to 2nd; land it behind in 5th.','Both use the same brush–spring–close action.','Travel sideways in the direction of the working foot.'],vs:[{n:'Coppélia Act I — Mazurka',x:'Alternating dessus/dessous gives the Mazurka its characteristic rolling energy.'}]},
+{id:'g4h',fr:'Jeté ordinaire',en:'Ordinary thrown step',tags:['Allegro','New ★'],desc:'A jump from one foot to the other — the working leg brushes forward or backward and the dancer leaps across.',how:['Brush the working leg forward through dégagé.','Spring off the supporting leg simultaneously.','Land on the working leg in demi-plié.','The leaving leg draws to cou-de-pied on landing.'],vs:[{n:'Giselle Act I — Peasant Pas de Deux',x:'Petits jetés in a brisk sequence define the bright allegro of this joyful folk variation.'}]},
+{id:'g4i',fr:'Pirouette en dehors — building to full turn',en:'Pirouette outward — single turn',tags:['Turns','New ★'],desc:'Grade 4 builds from half-turn preparation to a complete single pirouette en dehors from 4th position.',how:['Prepare in 4th — front leg in demi-plié, back leg extended.','Relevé with push from front leg; back foot sharply to retiré.','Spot: fix eyes on one point; head snaps around last.','Close in 5th demi-plié after the complete turn.'],vs:[{n:"Don Quixote — Kitri's Act I Variation",x:"Kitri's clean, attack-driven pirouettes define her fiery Castilian character."}]},
+]}
+]},
+g5:{label:'Grade 5',age:'Min. age 7',desc:'Développé derrière, petits battements, 2nd arabesque, full pirouettes, sissonne ouverte, pas de valse',groups:[
+{g:'Barre (Grade 5 additions)',steps:[
+{id:'g5a',fr:'Ronds de jambe à terre & battements fondus',en:'Ronds de jambe and fondu — combined',tags:['Barre','New ★'],desc:'Grade 5 combines ronds de jambe à terre and battements fondus in a single barre exercise.',how:['Perform ronds de jambe à terre en dehors and en dedans.','Follow with battements fondus to tendu and at 45°.','The transition between exercises is smooth.','Correct use of the supporting leg throughout is assessed.'],vs:[{n:'Giselle Act II — Grand Pas de Deux',x:'Ronds de jambe at 90° form the heart of the supported adage.'}]},
+{id:'g5b',fr:'Développé derrière',en:'Développé to the back',tags:['Barre','New ★'],desc:'The développé is now complete — derrière (to the back) is the most challenging direction, requiring hip flexibility and turnout.',how:['Draw working foot through cou-de-pied to retiré.','Extend the leg to the back — thigh lifts first, then lower leg.','Keep both hips square; do not open the working hip.','Close through retiré back to 5th.'],vs:[{n:"Sleeping Beauty Act I — Aurora's Solo",x:"Développés derrière appear in Aurora's variation, showing total hip openness."}]},
+{id:'g5c',fr:'Petits battements sur le cou-de-pied',en:'Small beats on the ankle',tags:['Barre','New ★'],desc:'The working foot alternates quickly between cou-de-pied devant and derrière. Develops speed, precision and beaten-step footwork.',how:['Place working foot sur le cou-de-pied devant.','Quickly alternate front to back of the ankle — rapid and precise.','Only the lower leg and foot move — nothing else.','Keep the working knee turned out throughout.'],vs:[{n:'Giselle Act II — Wilis Allegro',x:'Petits battements underpin the rapid, precise footwork of the supernatural enchainements.'}]},
+]},
+{g:'Centre (Grade 5 additions)',steps:[
+{id:'g5d',fr:'Pirouette en dehors — full turn',en:'Single pirouette outward',tags:['Turns','New ★'],desc:'Grade 5 expects a clean single pirouette en dehors with confident spotting and a controlled finish.',how:['Prepare in 4th, front leg in demi-plié, back leg long.','Relevé — sharp push from front leg, foot instantly to retiré.','Spot: eyes fix on one point; head snaps around last.','Close cleanly in 5th demi-plié after the turn.'],vs:[{n:'Swan Lake Act III — Black Swan Pas de Deux',x:"Odile's 32 fouettés each begin from this same preparation, repeated without pause."}]},
+{id:'g5e',fr:'2nd arabesque',en:'Second arabesque — upstage arm forward',tags:['Centre','New ★'],desc:'The upstage arm (same side as working leg) extends forward; downstage arm opens to 2nd. Different from 1st arabesque.',how:['Stand on one leg, working leg extended behind.','The upstage arm extends forward at shoulder height.','The downstage arm opens to 2nd position.','Torso turns slightly to open the shoulder toward the audience.'],vs:[{n:"Swan Lake Act II — Odette's Entrance",x:"Odette enters in 2nd arabesque — the pose immediately establishes her swan character."}]},
+{id:'g5f',fr:'Sissonne ouverte simple en arrière',en:'Open sissonne — backward',tags:['Allegro','New ★'],desc:'A jump from two feet landing on one, with the working leg sustaining its open position in arabesque.',how:['Begin in 5th, demi-plié.','Spring off both feet, traveling backward.','Land on front leg in demi-plié — working leg extends to arabesque.','The working leg holds the open position — this is sissonne ouverte.'],vs:[{n:"Don Quixote Act III — Kitri",x:"Sissonnes ouvertes form the travelling diagonal in Kitri's showpiece allegro."}]},
+{id:'g5g',fr:'Pas de basque glissé & sauté en arrière',en:'Basque step — backward',tags:['Centre','Allegro','New ★'],desc:'The pas de basque now travels en arrière (backward).',how:['Begin in 5th, demi-plié. Dégagé the back foot derrière.','Sweep the leg through à la seconde (en dedans arc).','Step backward onto the working leg.','Close the other foot to 5th through demi-pointe.'],vs:[{n:'Les Sylphides — Grand Waltz',x:'Pas de basque en arrière creates the retreating, cloud-like quality of this Romantic opening.'}]},
+{id:'g5h',fr:'Pas de valse (classical waltz step)',en:'Classical waltz step in 3/4',tags:['Travelling','New ★'],desc:'A three-beat travelling step with classical quality, balletic posture, and expressive port de bras.',how:['Count 1: step forward onto demi-pointe of the right foot.','Count 2: step onto demi-pointe of left foot.','Count 3: close right foot to 5th in demi-plié.','Arms and head use épaulement — let the waltz breathe and sway.'],vs:[{n:'Sleeping Beauty Act I — Waltz of the Fairies',x:'The waltz step is the backbone of this entire flowing ensemble dance.'}]},
+{id:'g5i',fr:'Assemblé devant & derrière',en:'Assemblé front and back',tags:['Allegro','New ★'],desc:'Assemblé now travels devant and derrière — developing versatility in allegro.',how:['Assemblé devant: brush back leg forward through dégagé, spring, close in 5th.','Assemblé derrière: brush front leg backward, spring, close in 5th.','Both follow the same brush–spring–join mechanics.','Land softly in 5th demi-plié.'],vs:[{n:"La Bayadère — Pas d'action",x:'Assemblés devant and derrière in canon create the architectural patterns of the corps.'}]},
+]}
+]},
+g6:{label:'Grade 6',age:'Min. age 11',desc:"Battements frappés barre exercise, ronds de jambe en l'air, pirouette en dedans, waltz enchaînement, pas de bourrée",groups:[
+{g:'Key additions — Grade 6',steps:[
+{id:'g6a',fr:'Battements frappés — barre exercise',en:'Struck beats — full barre exercise',tags:['Barre','New ★'],desc:'Grade 6 formalises battement frappé as a full barre exercise performed en croix.',how:['Working foot begins sur le cou-de-pied — wrapped or extended.','Strike to the desired direction with a sharp, precise action.','Foot is fully pointed and just off the floor at full extension.','Return to cou-de-pied with the same speed and control.'],vs:[{n:"La Bayadère — Nikiya's Variation",x:'Quick, percussive footwork gives this solo its jewel-like precision.'}]},
+{id:'g6b',fr:"Exercise for ronds de jambe en l'air with port de bras",en:"Ronds de jambe en l'air — barre exercise",tags:['Barre','New ★'],desc:"Working leg at 90°, lower leg draws an oval in the air while the thigh stays completely still.",how:["Hold working leg at 90° à la seconde.","Lower leg only: draw an oval — front (en dehors) or back (en dedans).","The thigh is completely still — only knee and lower leg move.","A co-ordinated port de bras accompanies each rond."],vs:[{n:"Sleeping Beauty — Aurora's Act I Variation",x:"Ronds de jambe en l'air create the ornate, jewel-like ornamentation of Aurora's solo."}]},
+{id:'g6d',fr:'Grands battements en cloche',en:'Large battements swinging like a bell',tags:['Barre','New ★'],desc:'Grands battements swinging devant and derrière continuously like a pendulum, without closing to 5th.',how:['Begin in 5th, grand battement devant.','Without closing to 5th, let leg swing through 1st to derrière.','Continue swinging devant–derrière without pausing.','The swing is free and pendulum-like.'],vs:[{n:"Don Quixote — Kitri Act III",x:"Grands battements en cloche in the coda release the hip for grand allegro."}]},
+{id:'g6g',fr:'Pirouette en dehors & en dedans',en:'Pirouette outward and inward',tags:['Turns','New ★'],desc:'Grade 6 introduces pirouette en dedans — turning toward the working leg. Both directions are now expected.',how:['En dehors: turn away from the working leg (same as Grades 4–5).','En dedans: prepare in 4th, spring from front leg, turn toward working leg.','Spotting is critical for both directions.','Clean retiré and controlled finish are assessed.'],vs:[{n:'Giselle Act II — Myrthe',x:"Myrthe uses pirouettes en dedans as part of her authoritative variation."}]},
+{id:'g6j',fr:'Pas de bourrée',en:'Three-step transfer of weight',tags:['Centre','Travelling','New ★'],desc:'A three-step linking step transferring weight. Dessous, dessus, devant and derrière versions.',how:['Pas de bourrée dessous: side–back–side, finishing back foot in front.','Pas de bourrée dessus: side–front–side, finishing front foot behind.','Each step is through demi-pointe — light and precise.','Used constantly as a linking step in all allegro combinations.'],vs:[{n:'Swan Lake Act IV — Coda',x:'Pas de bourrée at speed en pointe is one of the most recognisable images of classical ballet.'}]},
+{id:'g6k',fr:'Waltz enchaînement',en:'Classical waltz enchaînement',tags:['Travelling','New ★'],desc:'A fully structured waltz enchaînement in 3/4 time — travelling, with port de bras, balance, and waltz sway.',how:['Combine pas de valse, balance, chassé, and classical walks.','Quality is flowing and legato — never staccato.','Épaulement and port de bras are woven into every beat.','Count in one per bar — feel the waltz sway.'],vs:[{n:'Sleeping Beauty Act I — Waltz of the Fairies',x:'This waltz is the archetypal classical waltz enchaînement.'}]},
+]}
+]},
+g7:{label:'Grade 7',age:'Min. age 11',desc:'Coupé fouetté raccourci, pirouette enchaînement, grand allegro, Hungarian Czardas, free movement with scarf',groups:[
+{g:'Key additions — Grade 7',steps:[
+{id:'g7a',fr:'Coupé fouetté raccourci',en:'Cut-whipped-shortened step',tags:['Barre','New ★'],desc:'The working leg is cut in, whipped to the side, and gathered back. Used as a barre exercise and a linking step.',how:['Step onto the supporting leg (coupé).','Working leg whips to à la seconde at 45°.','Leg is then drawn quickly to cou-de-pied or retiré.','The quality is quick, clean and precise — one fluid action.'],vs:[{n:'Swan Lake Act III — Black Swan Coda',x:'Coupé fouetté raccourci is the linking step between each of the 32 fouettés.'}]},
+{id:'g7b',fr:'Pirouette enchaînement',en:'Pirouette combination in series',tags:['Turns','New ★'],desc:'Pirouettes in a formal enchaînement — combining en dehors and en dedans turns with preparatory and linking steps.',how:['Links several pirouettes with posés, chassés, or pas de bourrées.','Both en dehors and en dedans expected in the same combination.','Consistent spotting, retiré, and clean landings are assessed.','Quality — not quantity — of turns is paramount.'],vs:[{n:'Don Quixote Act III — Kitri & Basilio Coda',x:'The coda features repeated pirouette enchaînements across the full stage.'}]},
+{id:'g7c',fr:'Grand allegro',en:'Large travelling allegro sequence',tags:['Allegro','New ★'],desc:'Grade 7 grand allegro covers the full room — combining jumps, turns, and travelling steps in a musically shaped sequence.',how:['Combine grand jeté en avant, temps levé en arabesque, assemblés.','Use the full diagonal of the studio — be expansive.','Quality is performing quality — not just technical execution.','Male and female syllabi have distinct grand allegro settings.'],vs:[{n:'Sleeping Beauty Act I — Garland Dance',x:'Grand allegro fills the entire stage in the Garland Dance.'}]},
+{id:'g7e',fr:'Character — Hungarian Czardas',en:'Hungarian character dance',tags:['Character','New ★'],desc:'A stylised Hungarian folk dance with stamps, heel-clicks (male), and flowing skirt work (female). Alternates between slow (lassú) and fast (friss) sections.',how:['The Czardas alternates between a slow lassú and fast friss.','Stamps are deliberate and rhythmic — placed precisely on the beat.','Heel clicks (males) require quick, precise footwork.','Skirt handling (females) creates graceful spatial patterns.'],vs:[{n:'Coppélia Act III — Hungarian Dance',x:'The Hungarian dance in Coppélia is based on the same folk tradition as the RAD Czardas.'}]},
+]}
+]},
+g8:{label:'Grade 8',age:'Min. age 11',desc:'Solo performance culmination — Étude Lyrique (compulsory) plus classical, free movement and character solos',groups:[
+{g:'Classical solos',steps:[
+{id:'g8a',fr:'Barre — warm-up',en:'Full barre warm-up for solo performance',tags:['Barre'],desc:'Grade 8 opens with a complete barre warm-up before the solo performance section. All barre exercises from previous grades are expected.',how:['Pliés, battements tendus & glissés, ronds de jambe, fondus, frappés, adage, grands battements.','Performed once through, commencing facing the examiner.','Grade 8 is assessed as a solo performance — the barre sets the standard.','After the barre, candidates leave for the Entrée Polonaise.'],vs:[{n:'All professional ballet companies',x:'Every professional company class begins with a full barre — Grade 8 mirrors this professional format.'}]},
+{id:'g8b',fr:'Étude Lyrique (compulsory)',en:'Lyrical étude — compulsory classical solo',tags:['Centre','New ★'],desc:'The only compulsory piece in Grade 8. A lyrical classical solo demonstrating the full range of technique and artistry accumulated across all grades.',how:['Perform as a stage solo — enter and exit as in a real performance.','Demonstrate adage quality, turning, allegro, and expressive artistry.','No teacher cueing — the pianist takes the cue from the dancer.','Exit to prepare for the second classical choice.'],vs:[{n:'All RAD training',x:'Étude Lyrique is the summation of the entire graded syllabus — every step leads to this solo.'}]},
+{id:'g8c',fr:'Valse Printemps / Valse Automne / Demi-caractère',en:'Choice of second classical solo',tags:['Centre'],desc:"Candidates choose one additional classical solo — Valse Printemps, Valse Automne, or Demi-caractère. Each has distinct character, style, and technical demands.",how:["Valse Printemps: bright, springlike, girlish — legato phrasing.","Valse Automne: more mature, autumnal — sustained and lyrical.","Demi-caractère: character-infused classical — character shoes optional.","The choice should reflect the dancer's personality and strengths."],vs:[{n:'Coppélia, Giselle Act I, La Fille Mal Gardée',x:'Demi-caractère style draws on these comedic or folk-influenced classical ballets.'}]},
+]},
+{g:'Free movement & Character solos',steps:[
+{id:'g8d',fr:'Mouvement Libre Poétique / Dramatique',en:'Free movement solo — choice of two',tags:['Centre'],desc:"A solo exploring free movement — either poetic (flowing, lyrical) or dramatic (intense, characterful). May be performed barefoot.",how:["Poétique: sustained, flowing, organic — like breath made visible.","Dramatique: powerful, weighted, emotionally charged.","The dancer's personal expressiveness is the primary criterion.","This section contrasts entirely with the classical vocabulary."],vs:[{n:'Martha Graham, Pina Bausch',x:'Free movement aesthetics draw from the same expressive traditions as modern dance.'}]},
+{id:'g8e',fr:'Mazurka de Salon / Danse Russe',en:'Character solo — choice of two',tags:['Character'],desc:'Mazurka de Salon (elegant Polish ballroom style) or Danse Russe (energetic Russian folk). Character shoes worn.',how:['Mazurka de Salon: refined, elegant, ballroom-influenced Polish dance.','Danse Russe: bold, vibrant — stamps, leaps, and Russian folk movement.','Character shoes are worn for this section.','Quality of characterisation is assessed alongside technique.'],vs:[{n:'Swan Lake — Mazurka; Sleeping Beauty — Czardas',x:'Character dance in ballet sits between folk tradition and theatrical performance.'}]},
+]}
+]},
+if:{label:'Intermediate Foundation',age:'Min. age 11',desc:'Full syllabus vocabulary, pointe work (female), and free enchaînement set by the examiner',groups:[
+{g:'Key vocabulary — Intermediate Foundation',steps:[
+{id:'if1',fr:'Petits battements & battements frappés',en:'Petits battements and frappés — combined barre',tags:['Barre'],desc:'IF formalises petits battements and battements frappés in a single barre exercise. Tests speed, co-ordination, and clarity of footwork.',how:['Petits battements: alternate cou-de-pied devant and derrière rapidly.','Battements frappés: sharp striking action to the side and en croix.','Both require a perfectly still supporting leg and hip.','Tests speed, co-ordination, and clarity of footwork.'],vs:[{n:'La Bayadère — Kingdom of the Shades',x:'Precise, rapid footwork at the barre translates directly to corps enchainements on stage.'}]},
+{id:'if2',fr:'Assemblé — all directions',en:'Assemblé devant, derrière, dessus, dessous',tags:['Allegro'],desc:'IF expects assemblés in all directions as part of the free enchaînement focal step vocabulary.',how:['Devant: brush front leg forward, spring, land in 5th.','Derrière: brush back leg backward, spring, land in 5th.','Dessus: working foot ends in front. Dessous: working foot ends behind.','All require the same brush–spring–join mechanics.'],vs:[{n:'La Bayadère — Kingdom of the Shades',x:'Assemblés in all directions give the corps their architectural, multi-directional patterns.'}]},
+{id:'if3',fr:'Pirouettes en dehors & en dedans',en:'Pirouettes — both directions',tags:['Turns'],desc:'IF expects pirouettes en dehors (single from 4th) and en dedans (single from 4th en fondu) as a minimum.',how:['En dehors: from 4th demi-plié — clean single or beginning double.','En dedans: from 4th en fondu — spring, turn toward working leg.','Pirouettes are performed in the centre and as part of the enchaînement.','Quality of preparation, turn, and finish are all assessed.'],vs:[{n:"Sleeping Beauty Act I — Lilac Fairy",x:"The Lilac Fairy's variation uses pirouettes embedded in adage phrases."}]},
+{id:'if4',fr:'Sissonnes fermées de côté',en:'Closed sissonnes — sideways',tags:['Allegro'],desc:'Sissonne fermée de côté (dessus and dessous) — one of the focal steps of the IF free enchaînement.',how:['Begin in 5th, demi-plié.','Spring sideways — the working leg extends to the side.','Land on one foot in demi-plié; working leg extends.','Immediately close to 5th — this is the fermée (closed) action.'],vs:[{n:"Coppélia Act I — Swanilda's Variation",x:"Sissonnes fermées de côté give Swanilda's solo its light, springy peasant energy."}]},
+{id:'if5',fr:'Free enchaînement (set by examiner)',en:'Examiner-set allegro combination',tags:['Allegro','New ★'],desc:"A defining IF feature: the examiner sets an allegro combination on the spot using focal steps and specified linking steps.",how:['Focal steps: jetés ordinaires, assemblés (all directions), sissonnes fermées de côté.','Linking steps: pas de bourrée, changement, glissade, temps levé, coupé chassé pas de bourrée.','Examiner gives the combination verbally or by demonstration.','Performed two at a time after a brief preparation.'],vs:[{n:'All professional auditions',x:'Picking up and performing a combination immediately is the defining skill of a professional dancer.'}]},
+{id:'if6',fr:'Pointe work — rises, échappés relevés, courus',en:'Pointe work — female syllabus',tags:['Pointe','New ★'],desc:'IF female syllabus includes formal pointe: rises, échappés relevés, courus en avant and en tournant, and classical walks on pointe.',how:['Rises: flat through demi-pointe to full pointe and controlled descent.','Échappé relevé changé en pointe: jump 5th to 2nd on pointe, close to 5th with change.','Courus: tiny running steps on pointe, travelling en avant and en tournant.','Classical walks on pointe: deliberate, controlled and silent.'],vs:[{n:'Swan Lake Act II — Cygnes',x:'Courus en pointe is one of the most iconic images in all of classical ballet.'}]},
+]}
+]},
+int:{label:'Intermediate',age:'Min. age 12',desc:"Double pirouettes, posé pirouettes in series, brisé, entrechat quatre, fouetté à terre, pas de basque sauté",groups:[
+{g:'Key vocabulary — Intermediate',steps:[
+{id:'int1',fr:'Pirouettes en dehors — double',en:'Double pirouette outward',tags:['Turns','New ★'],desc:'Intermediate expects clean double pirouettes en dehors from 4th position as a minimum.',how:['Preparation identical to a single — 4th position, front leg in demi-plié.','The relevé must be sharper — faster than for a single.','Two complete rotations; spot twice.','Land cleanly in 4th or 5th demi-plié — do not walk out.'],vs:[{n:'Swan Lake Act III — Black Swan Pas de Deux',x:'Multiple pirouettes en dehors are one of the defining demands of the Black Swan variation.'}]},
+{id:'int2',fr:'Posé pirouettes en série',en:'Step-and-turn in series',tags:['Turns','New ★'],desc:'Pirouettes entered from a step (posé) and performed in series across the floor — the signature turning sequence of Intermediate.',how:['Step onto demi-pointe of the right foot (posé en avant).','Immediately draw left foot to retiré and turn en dehors.','After landing, immediately posé again for the next turn.','Cover the diagonal — sharp spotting on every turn.'],vs:[{n:"Sleeping Beauty Act I — Lilac Fairy",x:"A diagonal of posé pirouettes marks the Lilac Fairy's stately, ceremonial quality."}]},
+{id:'int3',fr:'Brisé dessus',en:'Beaten step travelling sideways',tags:['Allegro','New ★'],desc:'A travelling beaten jump: the back foot brushes to 2nd, beats in front in the air, and the step travels sideways.',how:['Begin in 5th. Back foot brushes to 2nd.','Spring: brushing foot beats in front of the supporting leg in the air.','The jump travels sideways in the direction of the brushing foot.','Land in 5th demi-plié — working foot now in front.'],vs:[{n:'Sleeping Beauty — Lilac Fairy Variation',x:'A diagonal of brisés dessus is one of the most elegant passages in the Lilac Fairy variation.'}]},
+{id:'int4',fr:'Entrechat quatre',en:'Four crossings in the air',tags:['Allegro','New ★'],desc:'A jump with four crossings of the feet. The signature step of petite batterie.',how:['Begin in 5th, demi-plié.','Spring — both legs straighten and feet cross.','Cross twice in the air (four crossings total).','Land in 5th demi-plié — same foot in front as you began.'],vs:[{n:'Sleeping Beauty — Bluebird Variation',x:"The Bluebird's variation is defined by rapid entrechats simulating the flutter of wings."}]},
+{id:'int5',fr:'Fouetté à terre & coupé fouetté raccourci sauté',en:'Fouetté along the floor; jumping fouetté',tags:['Turns','New ★'],desc:'Fouetté à terre: the body turns away from the extended leg. Coupé fouetté raccourci sauté adds a jump.',how:['Fouetté à terre: stand on one leg in tendu à la seconde; pivot en dehors; working leg whips to derrière.','Coupé fouetté raccourci sauté: same action but the supporting leg springs into the air.','The quality is a sharp, whipping action — hence "fouetté".','These steps prepare the mechanics of fouetté en tournant.'],vs:[{n:'Swan Lake Act III — 32 Fouettés',x:"Fouetté à terre is the technical foundation of Odile's most famous passage."}]},
+{id:'int6',fr:'Pas de basque sauté en avant & en arrière',en:'Pas de basque jumped — both directions',tags:['Allegro','New ★'],desc:'The pas de basque with a jump (sauté) in both directions.',how:['The three-part structure remains: sweep, transfer, close.','Sauté: the step onto the working leg is a full spring.','Both en avant and en arrière practised.','The sweeping quality of the arc must not be lost in the jump.'],vs:[{n:'Les Sylphides — Grand Waltz',x:'The pas de basque sauté gives the grand waltz its soaring, springtime quality.'}]},
+{id:'int7',fr:'Grand plié in 4th position',en:'Full bend in 4th position',tags:['Barre','New ★'],desc:'Intermediate adds grand plié in 4th — the most asymmetric plié, requiring different control for each leg.',how:['Stand in 4th — one foot in front, one behind.','Bend both knees simultaneously — front leg bends like a lunge, back heel rises.','Lower with control; pelvis stays level.','Rise through demi-pointe, both heels returning together.'],vs:[{n:'All classical ballet',x:'Grand plié in 4th is the standard preparation position for pirouettes in every classical work.'}]},
+]}
+]},
+af:{label:'Advanced Foundation',age:'Min. age 13',desc:'Ballonné composé, sissonne doublée, entrechat cinq, failli, brisé dessous, double pirouettes with posé',groups:[
+{g:'Key vocabulary — Advanced Foundation',steps:[
+{id:'af1',fr:'Ballonné composé en avant, en arrière, de côté',en:'Compound balloon step — all directions',tags:['Allegro','New ★'],desc:'The compound ballonné travels across the stage — one of the focal steps of the AF free enchaînement.',how:['Step onto supporting leg, brushing working leg as in dégagé.','Spring: both legs momentarily off the ground.','Working leg reaches full extension at tendu height or slightly above.','Land on supporting leg, working foot to cou-de-pied — repeat travelling.'],vs:[{n:"Don Quixote — Kitri's Act III Fan Diagonal",x:"Ballonnés composés de côté propel Kitri across the full stage."}]},
+{id:'af2',fr:'Ballonné simple — all four directions',en:'Simple balloon step — all directions',tags:['Allegro','New ★'],desc:'Simple ballonné now expected in all four directions including à la seconde. Focal step of the AF free enchaînement.',how:['Spring off one foot; working leg extends in the chosen direction.','Quality is buoyant and light — the body bounces off the floor.','Cou-de-pied on landing must be clean and precise in every direction.','En avant, en arrière, de côté, and à la seconde all practised.'],vs:[{n:"La Fille Mal Gardée — Lise's Variation",x:"A string of ballonnés gives Lise's variation its playful, irresistible lightness."}]},
+{id:'af3',fr:'Sissonne doublée — all directions',en:'Double sissonne — all directions',tags:['Allegro','New ★'],desc:'Sissonne doublée: the working leg closes immediately on landing, then the jump is repeated in the same direction.',how:['Jump from two feet; the working leg extends to the chosen direction.','Land on one foot in demi-plié — working leg extends.','Immediately close the working foot to 5th demi-plié (one count).','Spring again in the same direction — this is the doublée action.'],vs:[{n:'Sleeping Beauty — Fairy Variations',x:'Sissonnes doublées create the characteristic "two-step" phrasing in several fairy variations.'}]},
+{id:'af4',fr:'Entrechat cinq devant & derrière',en:'Five crossings in the air',tags:['Allegro','New ★'],desc:'Entrechat cinq: five crossings of the feet in the air. Unlike entrechat quatre, it lands on one foot.',how:['Spring from 5th — same takeoff as entrechat quatre.','Five crossings of the feet in the air.','Land on one foot (the original front foot now in cou-de-pied).','The landing foot must be placed silently and precisely.'],vs:[{n:"Sleeping Beauty — Carabosse Variation",x:"Entrechat cinq appears in Carabosse's allegro, its sharpness adding dramatic intensity."}]},
+{id:'af5',fr:'Failli',en:'Almost-fallen linking jump',tags:['Allegro','New ★'],desc:'A linking jump where the back leg sweeps through and the dancer lands in a split-like position before immediately closing.',how:['Spring off the supporting leg, arching the back leg through.','The body tilts slightly forward as the back leg sweeps.','Land on the front foot in demi-plié — back foot extends derrière.','Immediately flow into the next step (usually assemblé or grand jeté).'],vs:[{n:"Swan Lake — Prince Siegfried's Variation",x:"Failli into assemblé is the classic preparation for grand jeté diagonals in male solos."}]},
+{id:'af6',fr:'Brisé dessous',en:'Beaten step under — travelling sideways',tags:['Allegro','New ★'],desc:'The reverse of brisé dessus — the front foot brushes behind in the air and the step travels in the opposite direction.',how:['Begin in 5th — front foot brushes to 2nd from in front.','Spring: the brushing foot beats behind the supporting leg in the air.','The jump travels sideways in the direction of the brushing foot.','Land in 5th demi-plié — working foot now behind.'],vs:[{n:"La Sylphide Act II — Sylph's Variation",x:"Alternating brisés dessus/dessous give the Sylph her light, darting quality."}]},
+{id:'af7',fr:'Double pirouettes — multiple variants',en:'Double pirouettes — various preparations and finishes',tags:['Turns','New ★'],desc:'Advanced Foundation expects clean double pirouettes from multiple preparations, finishing in specific positions.',how:['En dehors doubles: from 4th demi-plié — finish in 4th en fondu, attitude, or arabesque.','En dedans doubles: from 4th en fondu — with fouetté action.','Posé into double: step, relevé, retiré, two turns, land.','Finish positions are as important as the turns themselves.'],vs:[{n:"Don Quixote — Kitri Variation Act III",x:"Kitri's doubles finishing in arabesque are the technical centrepiece of her variation."}]},
+]}
+]},
+a1:{label:'Advanced 1',age:'Min. age 14',desc:'Arabesque penchée, fouetté en tournant, multiple pirouettes, chaînés en pointe (female), ballotté sauté',groups:[
+{g:'Key vocabulary — Advanced 1',steps:[
+{id:'a1a',fr:'Arabesque penchée',en:'Tilted arabesque',tags:['Centre','New ★'],desc:'The body tips forward as the working leg rises — both movements are continuous and equal.',how:['Begin in arabesque at 90°.','As the working leg rises above 90°, the body tips forward proportionally.','The spine lengthens — not a collapse but a continuous arc.','Return by reversing: body rises as leg lowers — perfectly controlled.'],vs:[{n:"Giselle Act II — Wilis' floating enchainements",x:"Arabesque penchée gives the Wilis their supernatural, gravity-defying quality."}]},
+{id:'a1b',fr:'Fouetté rond de jambe en tournant',en:'Fouetté turning — whipping turns in series',tags:['Turns','New ★'],desc:'The iconic fouetté turns: working leg opens to à la seconde, then whips to retiré as the supporting leg relevés.',how:['Begin with a pirouette en dehors.','Open the working leg to à la seconde as you lower from the first turn.','As you relevé for the next turn, whip the working leg to retiré.','Spot on every turn — eyes find the same point each revolution.'],vs:[{n:'Swan Lake Act III — Black Swan',x:"Odile's 32 consecutive fouettés is the most famous sequence in all of classical ballet."}]},
+{id:'a1c',fr:'Grand battement développé',en:'Large developed kick',tags:['Barre','New ★'],desc:'The working leg passes through développé and continues into a full grand battement — one continuous action.',how:['Draw working foot through cou-de-pied and retiré (as in développé).','Continue extending the leg through 90° and into a grand battement.','The transition from développé to battement is smooth.','Return through the reverse développé to close to 5th.'],vs:[{n:'Sleeping Beauty — Aurora Paquita Variation',x:'Grand battement développé appears in several classical variations as the ultimate show of leg.'}]},
+{id:'a1d',fr:'Multiple pirouettes en dehors & en dedans',en:'Multiple turns — three or more',tags:['Turns','New ★'],desc:'Advanced 1 expects multiple pirouettes — three or more turns en dehors, and clean doubles en dedans with various finishes.',how:['The preparation is no different from a single — do not force the push.','The relevé is sharper and the retiré faster for multiple turns.','Core stability (not speed) sustains the turns.','Land precisely — in 4th, 5th, or specific poses as required.'],vs:[{n:'Swan Lake Act III — Black Swan',x:'The Black Swan variation features multiple pirouettes en dehors as a central demand.'}]},
+{id:'a1e',fr:'Chaînés en diagonale (& en pointe)',en:'Chain turns — diagonal series',tags:['Turns','New ★'],desc:'Rapid half-turns on demi-pointe (or en pointe for females) travelling along the diagonal.',how:['Step onto demi-pointe of the right foot — half turn.','Left foot steps beside as body continues to rotate.','Every two steps = one full revolution; spot at every revolution.','Arms remain in 1st — do not let them open or swing.'],vs:[{n:"Don Quixote — Kitri's Coda",x:"Kitri's chaînés across the full stage in the coda is one of the most exhilarating moments in ballet."}]},
+{id:'a1f',fr:'Ballotté sauté dessous & dessus',en:'Rocking, tossed jump — over and under',tags:['Allegro','New ★'],desc:'A rocking jump between two legs — dessus (front foot springs back) and dessous (back foot springs front).',how:['Begin in 5th. Spring off both feet, rocking the body slightly.','Dessus: front leg extends en avant as the back springs; land on the back leg.','Dessous: back leg extends derrière as the front springs; land on the front leg.','The rocking quality — forward and back — gives ballotté its name.'],vs:[{n:"Sleeping Beauty Act III — Bluebird Variation",x:"Ballottés appear in the Bluebird's allegro, their rocking quality imitating a bird in flight."}]},
+]}
+]},
+a2:{label:'Advanced 2',age:'Min. age 15',desc:"Highest graded level — professional technique, complex pointe enchaînements, double tours en l'air (male)",groups:[
+{g:'Key vocabulary — Advanced 2',steps:[
+{id:'a2a',fr:'Battements piqués',en:'Pricked beats — sharp barre exercise',tags:['Barre','New ★'],desc:"Advanced 2 introduces battements piqués — a sharp, pricking action of the working foot. Faster and more percussive than glissé.",how:['From 5th, the working foot "pricks" sharply to the side at glissé height.','The action is like a rapid tendu at speed — both legs remain straight.','Performed in quick succession — very fast tempo.','Close to 5th with the same sharp precision.'],vs:[{n:'All classical enchainements',x:'Battements piqués at speed are the technical foundation of all rapid petit allegro footwork.'}]},
+{id:'a2b',fr:'Complex pointe enchaînements 1–5',en:'Advanced pointe work — five enchainements (female)',tags:['Pointe','New ★'],desc:'Advanced 2 female syllabus features five distinct pointe enchaînements of increasing complexity.',how:['Enchaînement 1: rises, ballottés, posés — simplest pointe actions.','Enchaînements 2–3: add pirouettes en pointe (en dehors and en dedans).','Enchaînements 4–5: emboîtés, courus, and fouettés en pointe.','Each enchaînement is a distinct prescribed exercise.'],vs:[{n:"Sleeping Beauty Act III — Aurora's Variation (pointe)",x:"Aurora's pointe variation is the benchmark against which Advanced 2 pointe work is measured."}]},
+{id:'a2c',fr:"Double tour en l'air",en:'Double turn in the air — male syllabus',tags:['Allegro','Turns','New ★'],desc:'Two complete rotations in a single jump. One of the defining moments of male classical technique.',how:['Begin in 5th, demi-plié.','Spring from both feet — push strongly from the floor.','Draw arms in to initiate two complete rotations.','Land in 5th demi-plié — clean and upright.'],vs:[{n:"Don Quixote — Basilio's Coda",x:"A series of double tours en l'air is the dazzling signature of Basilio's coda."}]},
+{id:'a2d',fr:'Grand jeté en tournant',en:'Grand leaping turn',tags:['Allegro','New ★'],desc:'A grand jeté that includes a rotation in the air. The dancer takes off from one foot, turns in the air, and lands on the other.',how:['Approach with a run or chassé — momentum is essential.','Take off from one foot: grand battement the front leg.','Rotate in the air as both legs reach their fullest extension.','Land on the front leg in demi-plié — back leg extends in arabesque.'],vs:[{n:'Corsaire — Slave Variation',x:"A diagonal of grands jetés en tournant is the most visually spectacular sequence in this male showpiece."}]},
+{id:'a2e',fr:'Variation 1 or 2 — Advanced 2',en:'Repertoire variation — choice of two',tags:['Centre','New ★'],desc:'One of two set repertoire variations — professional-level classical ballet performance. The culmination of all RAD vocational training.',how:['The variation is fully memorised — performed entirely solo.','Enter and exit as in a real stage performance.','The examiner assesses technique, artistry, musicality, and performance quality.','This is the closest the graded syllabus comes to professional stage performance.'],vs:[{n:'Sleeping Beauty, Swan Lake, Giselle, Don Quixote',x:'Advanced 2 variations are drawn from the core classical repertoire.'}]},
+]}
+]}
+};
+
+let cur='primary',ok=new Set(),mts={},cA=null;
+const allS=()=>Object.entries(D).flatMap(([lk,lv])=>lv.groups.flatMap(g=>g.steps.map(s=>({...s,lk,ll:lv.label}))));
+
+function tC(t){
+  if(t.includes('New'))return 'tnew';
+  if(t==='Barre')return 'tbar';
+  if(['Centre','Arms','Travelling'].includes(t))return 'tcen';
+  if(t==='Allegro')return 'tall';
+  if(t==='Turns')return 'ttur';
+  if(t==='Pointe')return 'tpte';
+  if(t==='Character')return 'tcha';
+  return '';
+}
+
+function showV(v,btn){
+  ['levels','dictionary','progress'].forEach(id=>{const el=document.getElementById('view-'+id);el.style.display='none';el.classList.remove('act')});
+  document.querySelectorAll('.tnb').forEach(b=>b.classList.remove('act'));
+  const p=document.getElementById('view-'+v);p.style.display='flex';p.classList.add('act');
+  if(btn)btn.classList.add('act');
+  if(v==='dictionary')rDict('');
+  if(v==='progress')rProg();
+}
+
+function selLvl(lk,el){
+  cur=lk;document.querySelectorAll('.li').forEach(i=>i.classList.remove('act'));
+  el.classList.add('act');rLvl(D[lk]);
+}
+
+function vpHTML(s){
+  const yt=encodeURIComponent(s.fr+' RAD ballet tutorial');
+  const gl=encodeURIComponent(s.fr+' ballet glossary');
+  return `<div class="varea">
+    <div class="vico"></div>
+    <div class="vtitle">${s.fr}</div>
+    <div class="vsub">Find video tutorials for this step:</div>
+    <div class="vlinks">
+      <a class="vl vl-yt" href="https://www.youtube.com/results?search_query=${yt}" target="_blank" rel="noopener">▶ YouTube — RAD tutorial</a>
+      <a class="vl vl-gl" href="https://www.youtube.com/results?search_query=${gl}" target="_blank" rel="noopener">📖 Ballet glossary videos</a>
+    </div>
+  </div>`;
+}
+
+function mHTML(s,tab){
+  if(tab==='video') return vpHTML(s)+`<div style="margin-top:.3rem"><div class="clbl">About this step</div><div class="ctxt">${s.desc||''}</div></div>`;
+  if(tab==='steps') return `<div class="clbl">Step by step</div><ul class="sl">${(s.how||[]).map(h=>`<li>${h}</li>`).join('')}</ul>`;
+  if(tab==='vars') return `<div class="clbl">Used in these variations</div>${(s.vs||[]).map(v=>`<div class="vc"><div class="vn">${v.n}</div><div class="vx">${v.x}</div></div>`).join('')}`;
+  return '';
+}
+
+function card(s){
+  const l=ok.has(s.id),mt=mts[s.id]||'video';
+  return `<div class="sc" id="c-${s.id}">
+    <div class="sch" onclick="tog('${s.id}')">
+      <div class="smeta">
+        <div class="sfr">${s.fr}</div>
+        <div class="sen">${s.en}</div>
+        <div class="stags">${(s.tags||[]).map(t=>`<span class="tag ${tC(t)}">${t}</span>`).join('')}</div>
+      </div>
+      <div class="cact">
+        <button class="lb${l?' ok':''}" onclick="togOk('${s.id}',event)">✓</button>
+        <button class="xb">+</button>
+      </div>
+    </div>
+    <div class="scb">
+      <div class="mts">
+        <button class="mt${mt==='video'?' act':''}" onclick="swM('${s.id}','video',this)">▶ Video</button>
+        <button class="mt${mt==='steps'?' act':''}" onclick="swM('${s.id}','steps',this)">How To</button>
+        <button class="mt${mt==='vars'?' act':''}" onclick="swM('${s.id}','vars',this)">Variations</button>
+      </div>
+      <div id="mc-${s.id}">${mHTML(s,mt)}</div>
+    </div>
+  </div>`;
+}
+
+function rLvl(lv,fil){
+  const m=document.getElementById('sm');
+  if(fil){
+    const hits=allS().filter(s=>s.fr.toLowerCase().includes(fil.toLowerCase())||s.en.toLowerCase().includes(fil.toLowerCase())||(s.tags||[]).some(t=>t.toLowerCase().includes(fil.toLowerCase())));
+    m.innerHTML=`<h2 class="lvl-title">Search results</h2><p class="lvl-sub">${hits.length} step${hits.length!==1?'s':''} matching "${fil}"</p><div class="sgrid">${hits.map(s=>card(s)).join('')}</div>`;
+    return;
+  }
+  const gs=lv.groups.map(g=>`<div class="sgrp"><div class="glbl">${g.g}</div><div class="sgrid">${g.steps.map(s=>card(s)).join('')}</div></div>`).join('');
+  m.innerHTML=`<h2 class="lvl-title">${lv.label}<span style="font-family:'Jost',sans-serif;font-size:11.5px;color:var(--muted);font-weight:300;margin-left:6px">${lv.age}</span></h2><p class="lvl-sub">${lv.desc}</p>${gs}`;
+}
+
+function tog(id){document.getElementById('c-'+id).classList.toggle('open')}
+function swM(id,tab,btn){
+  mts[id]=tab;document.getElementById('c-'+id).querySelectorAll('.mt').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');const s=allS().find(x=>x.id===id);
+  if(s)document.getElementById('mc-'+id).innerHTML=mHTML(s,tab);
+}
+function togOk(id,e){e.stopPropagation();if(ok.has(id))ok.delete(id);else ok.add(id);rLvl(D[cur]);}
+function filtS(v){v.trim()?rLvl(D[cur],v.trim()):rLvl(D[cur])}
+
+function rDict(fil,lt){
+  let items=allS();
+  if(fil)items=items.filter(s=>s.fr.toLowerCase().includes(fil.toLowerCase())||s.en.toLowerCase().includes(fil.toLowerCase())||s.ll.toLowerCase().includes(fil.toLowerCase()));
+  if(lt)items=items.filter(s=>s.fr.toUpperCase().startsWith(lt));
+  document.getElementById('dgr').innerHTML=items.map(s=>`<div class="dc" onclick="gS('${s.id}','${s.lk}')"><div class="dltr">${s.fr[0].toUpperCase()}</div><div class="dterm">${s.fr}</div><div class="deng">${s.en}</div><span class="dlvl">${s.ll}</span></div>`).join('');
+  const ltrs=[...new Set(allS().map(s=>s.fr[0].toUpperCase()))].sort();
+  document.getElementById('anav').innerHTML=ltrs.map(l=>`<button class="ab${l===lt?' act':''}" onclick="aF('${l}',this)">${l}</button>`).join('');
+}
+function aF(l,btn){const a=btn.classList.contains('act');document.querySelectorAll('.ab').forEach(b=>b.classList.remove('act'));if(!a){btn.classList.add('act');cA=l;rDict(document.getElementById('dsrch').value,l);}else{cA=null;rDict(document.getElementById('dsrch').value);}}
+function filtD(v){cA=null;rDict(v)}
+function gS(id,lk){
+  showV('levels',document.querySelectorAll('.tnb')[0]);
+  selLvl(lk,document.querySelector(`[onclick="selLvl('${lk}',this)"]`));
+  setTimeout(()=>{const c=document.getElementById('c-'+id);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('open');}},160);
+}
+function rProg(){
+  document.getElementById('pbars').innerHTML=`<div class="pt">Level completion</div>`+
+    Object.entries(D).map(([k,d])=>{const all=d.groups.flatMap(g=>g.steps);const done=all.filter(s=>ok.has(s.id)).length;const pct=all.length?Math.round(done/all.length*100):0;
+    return `<div class="lp"><div class="lph"><span class="lpn">${d.label}</span><span class="lpc">${done}/${all.length}</span></div><div class="pbg"><div class="pf" style="width:${pct}%"></div></div></div>`;}).join('');
+}
+rLvl(D['primary']);
+</script>
+</body>
+</html>
