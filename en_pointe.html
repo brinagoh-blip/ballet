@@ -103,6 +103,17 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);fon
 .lpn{font-size:12px;color:var(--tl)}.lpc{font-size:11px;color:var(--muted)}
 .pbg{height:4px;background:var(--bm);border-radius:10px;overflow:hidden}
 .pf{height:100%;background:linear-gradient(90deg,var(--bd),var(--rose));border-radius:10px;transition:width .5s ease}
+.pron-box{background:var(--blush);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:.9rem;border:1px solid var(--bdr)}
+.pron-word{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--text);margin-bottom:.3rem;line-height:1.2}
+.pron-phonetic{font-size:1rem;color:var(--rose);font-style:italic;margin-bottom:.8rem;letter-spacing:.5px}
+.pron-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:var(--rose);color:white;border:none;border-radius:20px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;transition:background .15s}
+.pron-btn:hover{background:var(--rd)}
+.pron-btn.speaking{background:var(--rd)}
+.pron-tip{font-size:11.5px;color:var(--tl);margin-top:.8rem;font-weight:300;line-height:1.6}
+.pron-tip strong{font-weight:500;color:var(--text)}
+.pron-syllables{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.6rem}
+.pron-syl{display:inline-block;padding:3px 10px;border-radius:20px;font-size:13px;background:white;border:1px solid var(--bdr);color:var(--text)}
+.pron-syl.stress{background:var(--rose);color:white;border-color:var(--rose);font-weight:500}
 footer{text-align:center;padding:1.5rem 1rem;font-size:11px;color:var(--muted);border-top:1px solid var(--bdr);background:white;margin-top:2rem}
 footer a{color:var(--rose);text-decoration:none}
 footer a:hover{text-decoration:underline}
@@ -358,6 +369,148 @@ a2:{label:'Advanced 2',age:'Min. age 15',desc:"Highest graded level — professi
 let cur='primary',ok=new Set(),mts={},cA=null;
 const allS=()=>Object.entries(D).flatMap(([lk,lv])=>lv.groups.flatMap(g=>g.steps.map(s=>({...s,lk,ll:lv.label}))));
 
+// Pronunciation data: phonetic spelling + syllable breakdown (stressed syllable marked)
+// Format: { phonetic: 'display phonetic', syllables: ['syl','la','ble'], stress: index of stressed syllable, tip: 'memory tip' }
+const PRON = {
+  'p1':  { phonetic:'plee-AY', syllables:['plee','AY'], stress:1, tip:'Like "plea" + "yay" — the French "é" sounds like "ay".' },
+  'p2':  { phonetic:'ruh-luh-VAY', syllables:['ruh','luh','VAY'], stress:2, tip:'Three syllables. The final "é" is always "ay" in French ballet.' },
+  'p3':  { phonetic:'por duh BRA', syllables:['por','duh','BRA'], stress:2, tip:'Literally "carrying of the arms" — the "s" in bras is silent.' },
+  'p4':  { phonetic:'pwah-zee-SYAWN', syllables:['pwah','zee','SYAWN'], stress:2, tip:'The "on" ending is a nasal French vowel — don\'t pronounce the N clearly.' },
+  'p5':  { phonetic:'so-TAY', syllables:['so','TAY'], stress:1, tip:'"Sauté" means "jumped" — same root as the cooking term sauté.' },
+  'p6':  { phonetic:'gah-LOP', syllables:['gah','LOP'], stress:1, tip:'This one is almost the same as English — "gallop".' },
+  'g1a': { phonetic:'bat-MAWN tawn-DU', syllables:['bat','MAWN','tawn','DU'], stress:1, tip:'"Battement" — the T is soft, the EN is nasal. "Tendu" rhymes with "fondue".' },
+  'g1b': { phonetic:'duh-MEE plee-AY', syllables:['duh','MEE','plee','AY'], stress:1, tip:'"Demi" means half — like "demi-tasse" (half cup of coffee).' },
+  'g1e': { phonetic:'trawnss-FEHR duh pwah', syllables:['trawnss','FEHR','duh','pwah'], stress:1, tip:'"Poids" (weight) — the D and S are both silent.' },
+  'g1f': { phonetic:'shah-SAY', syllables:['shah','SAY'], stress:1, tip:'Like "sha-say" — the word means "to chase".' },
+  'g1g': { phonetic:'glee-SAHD', syllables:['glee','SAHD'], stress:1, tip:'From "glisser" (to slide) — the final E is silent.' },
+  'g1h': { phonetic:'puh-TEE so-TAY', syllables:['puh','TEE','so','TAY'], stress:1, tip:'"Petit" means small — the T at the end is silent.' },
+  'g1i': { phonetic:'puh-TEE zhuh-TAY', syllables:['puh','TEE','zhuh','TAY'], stress:3, tip:'"Jeté" means thrown — the J is a soft French "zh" sound, like the S in "treasure".' },
+  'g1j': { phonetic:'sprING POINTS', syllables:['SPRING','POINTS'], stress:0, tip:'This term is English — used in the RAD syllabus as written.' },
+  'g2a': { phonetic:'bat-MAWN fawn-DU', syllables:['bat','MAWN','fawn','DU'], stress:1, tip:'"Fondu" comes from "fondre" (to melt) — same word as the cheese dish!' },
+  'g2b': { phonetic:'grawnd bat-MAWN', syllables:['grawnd','bat','MAWN'], stress:0, tip:'"Grand" means large. The D in "grand" is silent before a consonant.' },
+  'g2c': { phonetic:'ah-DAHZH', syllables:['ah','DAHZH'], stress:1, tip:'From Italian "adagio" (at ease, slowly). The French soften the ending.' },
+  'g2e': { phonetic:'soo-bruh-SO', syllables:['soo','bruh','SO'], stress:2, tip:'Three syllables — the final T is silent in French.' },
+  'g2f': { phonetic:'ay-shah-PAY so-TAY', syllables:['ay','shah','PAY','so','TAY'], stress:2, tip:'"Échappé" means escaped — the accent on the E tells you to say "ay".' },
+  'g2g': { phonetic:'ah-sawm-BLAY', syllables:['ah','sawm','BLAY'], stress:2, tip:'From "assembler" (to assemble) — the S is soft, like "sam".' },
+  'g2h': { phonetic:'pah duh SHA', syllables:['pah','duh','SHA'], stress:2, tip:'"Chat" means cat — the T is silent. Literally "step of the cat".' },
+  'g3a': { phonetic:'bat-MAWN glee-SAY', syllables:['bat','MAWN','glee','SAY'], stress:1, tip:'"Glissé" means glided — accent on the final E means "say".' },
+  'g3b': { phonetic:'bat-MAWN fawn-DU ay day-vuh-LO-pay', syllables:['day','vuh','LO','pay'], stress:2, tip:'"Développé" — three syllables, stress in the middle.' },
+  'g3c': { phonetic:'rawnd duh ZHAWM ah TEHR', syllables:['rawnd','duh','ZHAWM','ah','TEHR'], stress:2, tip:'"Jambe" means leg — the B is silent. "Terre" means ground.' },
+  'g3d': { phonetic:'grawnd bat-MAWN', syllables:['grawnd','bat','MAWN'], stress:0, tip:'Same as "preparation for grands battements" — now the full swing.' },
+  'g3e': { phonetic:'ah-rah-BESS', syllables:['ah','rah','BESS'], stress:2, tip:'Named after Arabian-inspired ornamental design. The QUE ending is silent.' },
+  'g3f': { phonetic:'see-SAWN', syllables:['see','SAWN'], stress:1, tip:'The "on" is nasal — don\'t say the N fully. Like "see-SON" with a French accent.' },
+  'g3g': { phonetic:'shawnzh-MAWN duh PYAY', syllables:['shawnzh','MAWN','duh','PYAY'], stress:0, tip:'"Changement" — the G is soft (zh). "Pieds" means feet — the D and S are silent.' },
+  'g3h': { phonetic:'po-ZAY', syllables:['po','ZAY'], stress:1, tip:'From "poser" (to place) — simple and close to the English word "pose".' },
+  'g3i': { phonetic:'tawn luh-VAY', syllables:['tawn','luh','VAY'], stress:2, tip:'"Temps" means time/beat — the P and S are silent.' },
+  'g3j': { phonetic:'peer-WET', syllables:['peer','WET'], stress:1, tip:'From "pirouette" — the final E is silent. Like "peer-wet" said quickly.' },
+  'g4a': { phonetic:'grawnd plee-AY', syllables:['grawnd','plee','AY'], stress:1, tip:'"Grand plié" — grand means full/large. The plié is now a complete knee bend.' },
+  'g4b': { phonetic:'bat-MAWN frah-PAY', syllables:['bat','MAWN','frah','PAY'], stress:2, tip:'"Frappé" means struck — same word as "frappé" coffee (iced/beaten)!' },
+  'g4c': { phonetic:'day-vuh-lo-PAY', syllables:['day','vuh','lo','PAY'], stress:3, tip:'Four syllables. Think of "develop" + "ay". The leg unfolds like a flower.' },
+  'g4d': { phonetic:'grawnd bat-MAWN', syllables:['grawnd','bat','MAWN'], stress:0, tip:'Now performed en croix — in the shape of a cross (devant, side, derrière, side).' },
+  'g4f': { phonetic:'pah duh BASK', syllables:['pah','duh','BASK'], stress:2, tip:'Named after the Basque people of Spain/France. The QUE is silent.' },
+  'g4g': { phonetic:'ah-sawm-BLAY duh-SU duh-SU', syllables:['duh','SU'], stress:1, tip:'"Dessus" (over) and "dessous" (under) — the X is silent in both.' },
+  'g4h': { phonetic:'zhuh-TAY or-dee-NEHR', syllables:['zhuh','TAY','or','dee','NEHR'], stress:1, tip:'"Jeté" — the J is soft (zh). "Ordinaire" means ordinary/basic.' },
+  'g4i': { phonetic:'peer-WET awn duh-OR', syllables:['peer','WET','awn','duh','OR'], stress:1, tip:'"En dehors" means outward — turning away from the supporting leg.' },
+  'g5a': { phonetic:'rawnd duh ZHAWM ay fawn-DU', syllables:['rawnd','duh','ZHAWM','ay','fawn','DU'], stress:2, tip:'Combined exercise — listen for the nasal "on" sounds throughout.' },
+  'g5b': { phonetic:'day-vuh-lo-PAY deh-RYEHR', syllables:['day','vuh','lo','PAY','deh','RYEHR'], stress:3, tip:'"Derrière" means behind/back — the È makes an "eh" sound.' },
+  'g5c': { phonetic:'puh-TEE bat-MAWN sur luh koo-duh-PYAY', syllables:['koo','duh','PYAY'], stress:2, tip:'"Cou-de-pied" means neck of the foot — where the ankle meets the shin.' },
+  'g5d': { phonetic:'peer-WET awn duh-OR', syllables:['peer','WET','awn','duh','OR'], stress:1, tip:'Now a full single turn — same preparation as Grade 4, executed cleanly.' },
+  'g5e': { phonetic:'duh-ZYEM ah-rah-BESS', syllables:['duh','ZYEM','ah','rah','BESS'], stress:1, tip:'"Deuxième" means second — the X makes a Z sound.' },
+  'g5f': { phonetic:'see-SAWN oo-VEHRT', syllables:['see','SAWN','oo','VEHRT'], stress:1, tip:'"Ouverte" means open — the working leg stays open on landing.' },
+  'g5g': { phonetic:'pah duh BASK awn ah-RYEHR', syllables:['pah','duh','BASK','awn','ah','RYEHR'], stress:2, tip:'"En arrière" means backward — the working leg sweeps behind.' },
+  'g5h': { phonetic:'pah duh VALSS', syllables:['pah','duh','VALSS'], stress:2, tip:'"Valse" is the French word for waltz — in 3/4 time.' },
+  'g5i': { phonetic:'ah-sawm-BLAY duh-VAWN ay deh-RYEHR', syllables:['duh','VAWN'], stress:1, tip:'"Devant" (front) and "derrière" (back) — the working leg brushes in each direction.' },
+  'g6a': { phonetic:'bat-MAWN frah-PAY', syllables:['bat','MAWN','frah','PAY'], stress:2, tip:'Now a formal barre exercise performed en croix at Grade 6 level.' },
+  'g6b': { phonetic:'rawnd duh ZHAWM awn LEHR', syllables:['rawnd','duh','ZHAWM','awn','LEHR'], stress:2, tip:'"En l\'air" means in the air — the lower leg draws ovals while the thigh is still.' },
+  'g6c': { phonetic:'ah-DAHZH', syllables:['ah','DAHZH'], stress:1, tip:'Now a formal barre exercise combining développé, arabesque, and ronds de jambe en l\'air.' },
+  'g6d': { phonetic:'grawnd bat-MAWN awn KLOSH', syllables:['grawnd','bat','MAWN','awn','KLOSH'], stress:0, tip:'"En cloche" means like a bell — swinging forward and back like a pendulum.' },
+  'g6e': { phonetic:'duh-MEE PWANT awn-sheh-nuh-MAWN', syllables:['duh','MEE','PWANT','awn','sheh','nuh','MAWN'], stress:0, tip:'"Enchaînement" means a chain of steps — the whole exercise is on demi-pointe.' },
+  'g6f': { phonetic:'por duh BRA', syllables:['por','duh','BRA'], stress:2, tip:'Now a formal centre exercise with forward (1st) and back bend (2nd) versions.' },
+  'g6g': { phonetic:'peer-WET awn duh-OR ay awn duh-DAWN', syllables:['awn','duh','DAWN'], stress:2, tip:'"En dedans" means inward — turning toward the working leg. Contrast with en dehors.' },
+  'g6h': { phonetic:'ah-DAHZH ay-TUD', syllables:['ah','DAHZH','ay','TUD'], stress:1, tip:'The Grade 6 adage study includes arabesques, développés and attitude.' },
+  'g6i': { phonetic:'ay-shah-PAY so-TAY awn KAT-ryem', syllables:['ay','shah','PAY','so','TAY','awn','KAT','ryem'], stress:2, tip:'"Quatrième" means fourth — échappé now opens to 4th position.' },
+  'g6j': { phonetic:'pah duh boo-RAY', syllables:['pah','duh','boo','RAY'], stress:3, tip:'From "bourrer" (to stuff, to cram) — three quick steps packed together.' },
+  'g6k': { phonetic:'VALSS awn-sheh-nuh-MAWN', syllables:['VALSS','awn','sheh','nuh','MAWN'], stress:0, tip:'A chain of waltz steps — the enchaînement travels through space musically.' },
+  'g6l': { phonetic:'MOO-vuh-MAWN lee-BRR', syllables:['MOOL','vuh','MAWN','lee','BRR'], stress:0, tip:'"Mouvement libre" means free movement — a different movement language from classical.' },
+  'g7a': { phonetic:'koo-PAY foo-eh-TAY rah-koor-SEE', syllables:['koo','PAY','foo','eh','TAY','rah','koor','SEE'], stress:1, tip:'"Coupé" (cut), "fouetté" (whipped), "raccourci" (shortened) — three actions in one step.' },
+  'g7b': { phonetic:'peer-WET awn-sheh-nuh-MAWN', syllables:['peer','WET','awn','sheh','nuh','MAWN'], stress:0, tip:'A chain of pirouettes — multiple turns linked with posés and pas de bourrées.' },
+  'g7c': { phonetic:'grawnd ah-lay-GRO', syllables:['grawnd','ah','lay','GRO'], stress:2, tip:'"Allegro" comes from Italian (lively, fast) — grand allegro crosses the full studio.' },
+  'g7e': { phonetic:'CHAR-ak-tehr', syllables:['CHAR','ak','tehr'], stress:0, tip:'Character dance uses folk/national styles. The Hungarian Czardas alternates slow-fast.' },
+  'g8a': { phonetic:'BAR worm-UP', syllables:['BAR','WORM','UP'], stress:0, tip:'The barre warm-up at Grade 8 includes all exercises from all previous grades.' },
+  'g8b': { phonetic:'ay-TUD lee-REEK', syllables:['ay','TUD','lee','REEK'], stress:1, tip:'"Étude" means study — "lyrique" means lyrical. The only compulsory Grade 8 piece.' },
+  'g8c': { phonetic:'VALSS prawN-TAWN / VALSS o-TAWN', syllables:['VALSS','prawN','TAWN'], stress:0, tip:'"Printemps" = spring, "Automne" = autumn — the M in automne is silent.' },
+  'g8d': { phonetic:'moo-vuh-MAWN lee-BRR', syllables:['moo','vuh','MAWN','lee','BRR'], stress:0, tip:'Free movement — either poetic or dramatic in quality.' },
+  'g8e': { phonetic:'mah-ZUR-kah duh sah-LAWN / DAWNS RUS', syllables:['mah','ZUR','kah'], stress:1, tip:'"Mazurka" comes from the Mazur people of Poland. "Danse Russe" = Russian dance.' },
+  'if1': { phonetic:'puh-TEE bat-MAWN ay bat-MAWN frah-PAY', syllables:['puh','TEE','bat','MAWN'], stress:1, tip:'Combined barre exercise — both require precise, rapid foot action.' },
+  'if2': { phonetic:'ah-sawm-BLAY', syllables:['ah','sawm','BLAY'], stress:2, tip:'Now expected in all directions as a free enchaînement focal step.' },
+  'if3': { phonetic:'peer-WET awn duh-OR ay awn duh-DAWN', syllables:['peer','WET'], stress:0, tip:'Both directions expected. En dehors = outward. En dedans = inward.' },
+  'if4': { phonetic:'see-SAWN fehr-MAY duh KO-tay', syllables:['see','SAWN','fehr','MAY','duh','KO','tay'], stress:1, tip:'"Fermée" means closed — the working leg closes immediately on landing.' },
+  'if5': { phonetic:'leeEHR awn-sheh-nuh-MAWN', syllables:['leeEHR','awn','sheh','nuh','MAWN'], stress:0, tip:'The examiner sets this combination on the spot — tests your ear and adaptability.' },
+  'if6': { phonetic:'PWANT', syllables:['PWANT'], stress:0, tip:'Pointe work — dancing on the tips of the toes in pointe shoes. Female syllabus.' },
+  'int1': { phonetic:'bat-MAWN glee-SAY ay bat-MAWN zhuh-TAY', syllables:['zhuh','TAY'], stress:1, tip:'"Jeté" means thrown — a dynamic, thrown battement at 45°.' },
+  'int2': { phonetic:'rawnd duh ZHAWM awn LEHR', syllables:['rawnd','duh','ZHAWM','awn','LEHR'], stress:2, tip:'Now singles and doubles — the lower leg draws one or two ovals.' },
+  'int3': { phonetic:'DOOB-luh peer-WET awn duh-OR', syllables:['DOOB','luh','peer','WET'], stress:0, tip:'"Double" means two complete rotations in one relevé.' },
+  'int4': { phonetic:'po-ZAY peer-WET awn SAY-ree', syllables:['po','ZAY','peer','WET','awn','SAY','ree'], stress:1, tip:'Step-and-turn in series — pirouettes chained together across the diagonal.' },
+  'int5': { phonetic:'bree-ZAY duh-SU', syllables:['bree','ZAY','duh','SU'], stress:1, tip:'"Brisé" means broken — the beaten step that travels sideways.' },
+  'int6': { phonetic:'awn-truh-SHA KAT-ruh', syllables:['awn','truh','SHA','KAT','ruh'], stress:2, tip:'"Entrechat" = interlaced. "Quatre" = four. Four crossings of the feet in the air.' },
+  'int7': { phonetic:'foo-eh-TAY ah TEHR', syllables:['foo','eh','TAY','ah','TEHR'], stress:2, tip:'"Fouetté" means whipped. "À terre" means on the ground.' },
+  'int8': { phonetic:'pah duh BASK so-TAY', syllables:['pah','duh','BASK','so','TAY'], stress:2, tip:'Now with a jump — the transfer of weight becomes a spring.' },
+  'af1': { phonetic:'bah-lo-NAY kawm-po-ZAY', syllables:['bah','lo','NAY','kawm','po','ZAY'], stress:2, tip:'"Ballonné" from "ballon" (balloon) — the quality is light and bounced.' },
+  'af2': { phonetic:'bah-lo-NAY SAWNPL', syllables:['bah','lo','NAY','SAWNPL'], stress:2, tip:'"Simple" means single — one spring in the desired direction.' },
+  'af3': { phonetic:'see-SAWN doo-BLAY', syllables:['see','SAWN','doo','BLAY'], stress:1, tip:'"Doublée" means doubled — the jump is repeated immediately in the same direction.' },
+  'af4': { phonetic:'awn-truh-SHA SAWNK', syllables:['awn','truh','SHA','SAWNK'], stress:2, tip:'"Cinq" = five. Five crossings — and unlike entrechat quatre, it lands on ONE foot.' },
+  'af5': { phonetic:'fah-EE', syllables:['fah','EE'], stress:1, tip:'From "faillir" (to almost fall) — the body tips forward, almost losing balance.' },
+  'af6': { phonetic:'DOOB-luh peer-WET', syllables:['DOOB','luh','peer','WET'], stress:0, tip:'Now from multiple preparations, finishing in specific positions.' },
+  'a1a': { phonetic:'ah-rah-BESS pawn-SHAY', syllables:['ah','rah','BESS','pawn','SHAY'], stress:2, tip:'"Penchée" means tilted/inclined — the body tips forward as the leg rises.' },
+  'a1b': { phonetic:'foo-eh-TAY rawnd duh ZHAWM awn tour-NAWN', syllables:['foo','eh','TAY','rawnd','duh','ZHAWM','awn','tour','NAWN'], stress:2, tip:'The iconic whipping turn. "En tournant" = while turning.' },
+  'a1c': { phonetic:'grawnd bat-MAWN day-vuh-lo-PAY', syllables:['grawnd','bat','MAWN','day','vuh','lo','PAY'], stress:0, tip:'The leg passes through développé and continues into a full grand battement.' },
+  'a1d': { phonetic:'MUL-tee-pl peer-WET awn duh-OR', syllables:['MUL','tee','pl','peer','WET'], stress:0, tip:'Three or more turns en dehors in a single relevé.' },
+  'a1e': { phonetic:'sheh-NAY awn dee-ah-go-NAHL', syllables:['sheh','NAY','awn','dee','ah','go','NAHL'], stress:1, tip:'"Chaînes" means chains — rapid half-turns chained together along the diagonal.' },
+  'a1f': { phonetic:'bah-lo-TAY so-TAY', syllables:['bah','lo','TAY','so','TAY'], stress:2, tip:'"Ballotté" means rocked/tossed — the body rocks between the two legs.' },
+  'a2a': { phonetic:'bat-MAWN pee-KAY', syllables:['bat','MAWN','pee','KAY'], stress:1, tip:'"Piqué" means pricked — a sharp, pricking action of the foot.' },
+  'a2b': { phonetic:'PWANT awn-sheh-nuh-MAWN', syllables:['PWANT','awn','sheh','nuh','MAWN'], stress:0, tip:'Five distinct pointe enchaînements of increasing complexity.' },
+  'a2c': { phonetic:'DOOB-luh TOOR awn LEHR', syllables:['DOOB','luh','TOOR','awn','LEHR'], stress:0, tip:'Two complete rotations in a single jump — a defining male step.' },
+  'a2d': { phonetic:'vah-ree-ah-SYAWN', syllables:['vah','ree','ah','SYAWN'], stress:3, tip:'A repertoire variation — professional-level performance. The culmination of all RAD training.' },
+};
+
+function speak(text, btnId) {
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const btn = document.getElementById(btnId);
+  const utt = new SpeechSynthesisUtterance(text);
+  // Try to find a French voice, fall back to default
+  const voices = window.speechSynthesis.getVoices();
+  const frVoice = voices.find(v => v.lang.startsWith('fr'));
+  if(frVoice) utt.voice = frVoice;
+  utt.lang = 'fr-FR';
+  utt.rate = 0.85;
+  utt.pitch = 1;
+  if(btn) { btn.classList.add('speaking'); btn.textContent = '🔊 Speaking…'; }
+  utt.onend = () => { if(btn) { btn.classList.remove('speaking'); btn.textContent = '🔊 Hear it spoken'; } };
+  utt.onerror = () => { if(btn) { btn.classList.remove('speaking'); btn.textContent = '🔊 Hear it spoken'; } };
+  window.speechSynthesis.speak(utt);
+}
+
+function pronHTML(s) {
+  const p = PRON[s.id];
+  // Build syllable display
+  const sylHTML = p ? p.syllables.map((syl, i) =>
+    `<span class="pron-syl${i === p.stress ? ' stress' : ''}">${syl}</span>`
+  ).join('') : '';
+  const btnId = 'spk-' + s.id;
+  return `<div class="pron-box">
+    <div class="pron-word">${s.fr}</div>
+    ${p ? `<div class="pron-phonetic">${p.phonetic}</div>
+    <div class="pron-syllables">${sylHTML}</div>
+    <div style="font-size:10.5px;color:var(--muted);margin-bottom:.7rem">Highlighted syllable = stressed</div>` : ''}
+    <button class="pron-btn" id="${btnId}" onclick="speak('${s.fr.replace(/'/g,'\\\'').replace(/"/g,'')}','${btnId}')">
+      🔊 Hear it spoken
+    </button>
+    ${p ? `<div class="pron-tip"><strong>Remember:</strong> ${p.tip}</div>` : ''}
+  </div>
+  <div style="font-size:11.5px;color:var(--muted);font-style:italic;margin-top:.3rem">Audio uses your browser's French text-to-speech — quality varies by device.</div>`;
+}
+
 function tC(t){
   if(t.includes('New'))return 'tnew';
   if(t==='Barre')return 'tbar';
@@ -399,6 +552,7 @@ function vpHTML(s){
 
 function mHTML(s,tab){
   if(tab==='video') return vpHTML(s)+`<div style="margin-top:.3rem"><div class="clbl">About this step</div><div class="ctxt">${s.desc||''}</div></div>`;
+  if(tab==='pron') return pronHTML(s);
   if(tab==='steps') return `<div class="clbl">Step by step</div><ul class="sl">${(s.how||[]).map(h=>`<li>${h}</li>`).join('')}</ul>`;
   if(tab==='vars') return `<div class="clbl">Used in these variations</div>${(s.vs||[]).map(v=>`<div class="vc"><div class="vn">${v.n}</div><div class="vx">${v.x}</div></div>`).join('')}`;
   return '';
@@ -421,6 +575,7 @@ function card(s){
     <div class="scb">
       <div class="mts">
         <button class="mt${mt==='video'?' act':''}" onclick="swM('${s.id}','video',this)">▶ Video</button>
+        <button class="mt${mt==='pron'?' act':''}" onclick="swM('${s.id}','pron',this)">🔊 Pronunciation</button>
         <button class="mt${mt==='steps'?' act':''}" onclick="swM('${s.id}','steps',this)">How To</button>
         <button class="mt${mt==='vars'?' act':''}" onclick="swM('${s.id}','vars',this)">Variations</button>
       </div>
